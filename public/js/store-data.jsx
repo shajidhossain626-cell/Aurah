@@ -1,0 +1,343 @@
+// AURA — Store Data & Configuration
+// Edit this file to customize products, collections, and brand settings
+
+const STORE_CONFIG = {
+  name: "AURAH",
+  tagline: "Curated for the discerning few.",
+  description: "Premium lifestyle essentials — fashion, beauty, and home.",
+  currency: "USD",
+  currencySymbol: "$",
+  email: "hello@aurahstudio.co",
+  instagram: "@aurahstudio",
+};
+
+const COLLECTIONS = [
+  { id: "all", label: "All", count: 16 },
+  { id: "fashion", label: "Fashion", count: 6 },
+  { id: "beauty", label: "Beauty", count: 5 },
+  { id: "home", label: "Home", count: 5 },
+];
+
+const PRODUCTS = [
+  // FASHION
+  {
+    id: 1, collection: "fashion",
+    name: "Atelier Wrap Coat",
+    subtitle: "Camel / Cashmere Blend",
+    price: 890, originalPrice: 1100,
+    badge: "Bestseller",
+    sizes: ["XS","S","M","L","XL"],
+    colors: [
+      { name: "Camel", hex: "#c9a880" },
+      { name: "Slate", hex: "#6b7280" },
+      { name: "Onyx", hex: "#1a1a1a" },
+    ],
+    description: "Draped in Italian cashmere blend, this wrap coat is the cornerstone of a considered wardrobe. Structured shoulders, a fluid hem, and a timeless silhouette that transcends seasons.",
+    details: ["100% Cashmere Blend", "Dry clean only", "Made in Italy", "True to size"],
+    images: ["coat", "coat-detail", "coat-model"],
+    rating: 4.9, reviews: 247,
+    featured: true,
+  },
+  {
+    id: 2, collection: "fashion",
+    name: "Soie Slip Dress",
+    subtitle: "Champagne / Pure Silk",
+    price: 420,
+    badge: "New",
+    sizes: ["XS","S","M","L"],
+    colors: [
+      { name: "Champagne", hex: "#e8d5b0" },
+      { name: "Noir", hex: "#111111" },
+      { name: "Blush", hex: "#d4a0a0" },
+    ],
+    description: "Pure silk charmeuse falls effortlessly against the body. A bias cut silhouette that moves with intention — equally at home on an evening terrace or a gallery opening.",
+    details: ["100% Pure Silk", "Hand wash cold", "Made in France", "Bias cut — size up"],
+    images: ["dress", "dress-detail"],
+    rating: 4.8, reviews: 183,
+    featured: true,
+  },
+  {
+    id: 3, collection: "fashion",
+    name: "Maison Leather Tote",
+    subtitle: "Pebbled Full-Grain Leather",
+    price: 650,
+    badge: null,
+    sizes: ["One Size"],
+    colors: [
+      { name: "Cognac", hex: "#8b5e3c" },
+      { name: "Black", hex: "#1a1a1a" },
+      { name: "Ivory", hex: "#f5f0e8" },
+    ],
+    description: "Full-grain Italian leather, naturally pebbled and rich with character. A structured tote sized for the modern life — laptop, notebook, and essentials, beautifully contained.",
+    details: ["Full-grain Italian leather", "Suede interior", "Solid brass hardware", "30cm × 36cm × 14cm"],
+    images: ["tote", "tote-detail"],
+    rating: 4.9, reviews: 312,
+    featured: false,
+  },
+  {
+    id: 4, collection: "fashion",
+    name: "Rib-Knit Bodysuit",
+    subtitle: "Merino Wool / Cream",
+    price: 195,
+    badge: null,
+    sizes: ["XS","S","M","L","XL"],
+    colors: [
+      { name: "Cream", hex: "#f5ede0" },
+      { name: "Charcoal", hex: "#3a3a3a" },
+      { name: "Sage", hex: "#8a9e8a" },
+    ],
+    description: "Extra-fine merino wool in a close rib knit. Effortlessly layered under tailoring or worn alone — a foundation piece elevated to art.",
+    details: ["100% Merino Wool", "Machine wash gentle", "Made in Scotland", "True to size"],
+    images: ["bodysuit"],
+    rating: 4.7, reviews: 156,
+    featured: false,
+  },
+  {
+    id: 5, collection: "fashion",
+    name: "Wide-Leg Trousers",
+    subtitle: "Linen Blend / Oat",
+    price: 310,
+    badge: "Low Stock",
+    sizes: ["XS","S","M","L"],
+    colors: [
+      { name: "Oat", hex: "#d4c5a9" },
+      { name: "Ecru", hex: "#f0e8d8" },
+      { name: "Clay", hex: "#b5866e" },
+    ],
+    description: "A wide, commanding silhouette in breathable linen-cotton blend. High-waisted, with a gentle drape — the trouser that anchors any wardrobe.",
+    details: ["70% Linen, 30% Cotton", "Hand wash cold", "Made in Portugal", "High-rise fit"],
+    images: ["trousers"],
+    rating: 4.8, reviews: 98,
+    featured: false,
+  },
+  {
+    id: 6, collection: "fashion",
+    name: "Structured Blazer",
+    subtitle: "Wool Gabardine / Ivory",
+    price: 580,
+    badge: null,
+    sizes: ["XS","S","M","L","XL"],
+    colors: [
+      { name: "Ivory", hex: "#f5f0e8" },
+      { name: "Midnight", hex: "#1c1c2e" },
+      { name: "Camel", hex: "#c9a880" },
+    ],
+    description: "Italian wool gabardine, precisely tailored. Strong shoulders, a suppressed waist, and clean lapels — authority worn elegantly.",
+    details: ["100% Wool Gabardine", "Dry clean only", "Made in Italy", "Fully lined"],
+    images: ["blazer"],
+    rating: 4.9, reviews: 201,
+    featured: true,
+  },
+  // BEAUTY
+  {
+    id: 7, collection: "beauty",
+    name: "Radiance Face Oil",
+    subtitle: "Squalane + 24K Gold Peptides",
+    price: 145,
+    badge: "Editor's Pick",
+    sizes: ["30ml","50ml"],
+    colors: [],
+    description: "A luminous elixir of squalane, rosehip, and 24K gold peptides. Twelve actives work overnight to restore density, glow, and a sense of calm to your complexion.",
+    details: ["Squalane + Rosehip base", "24K Gold Peptides", "Fragrance-free", "Dermatologist tested"],
+    images: ["face-oil"],
+    rating: 4.9, reviews: 423,
+    featured: true,
+  },
+  {
+    id: 8, collection: "beauty",
+    name: "Velvet Lip Serum",
+    subtitle: "Plumping + Hydrating",
+    price: 58,
+    badge: "New",
+    sizes: ["3.5g"],
+    colors: [
+      { name: "Bare", hex: "#c9876a" },
+      { name: "Berry", hex: "#8b3a52" },
+      { name: "Rosé", hex: "#d4a0a0" },
+      { name: "Nude", hex: "#d4aa8e" },
+    ],
+    description: "A triple-action lip serum with hyaluronic acid, peptide complex, and sheer pigment. Plumps, nourishes, and subtly tints — in a single gesture.",
+    details: ["Hyaluronic Acid", "Peptide Complex", "Jojoba Wax base", "Cruelty-free"],
+    images: ["lip-serum"],
+    rating: 4.8, reviews: 289,
+    featured: false,
+  },
+  {
+    id: 9, collection: "beauty",
+    name: "Lumière Eye Cream",
+    subtitle: "Retinol + Caffeine Complex",
+    price: 98,
+    badge: null,
+    sizes: ["15ml"],
+    colors: [],
+    description: "A concentrated eye treatment with encapsulated retinol, caffeine, and vitamin K. Addresses dark circles, fine lines, and puffiness with clinical precision.",
+    details: ["Encapsulated Retinol 0.1%", "Caffeine + Vitamin K", "Fragrance-free", "Ophthalmologist tested"],
+    images: ["eye-cream"],
+    rating: 4.7, reviews: 167,
+    featured: false,
+  },
+  {
+    id: 10, collection: "beauty",
+    name: "Silk Cloud Powder",
+    subtitle: "Translucent Setting Powder",
+    price: 72,
+    badge: null,
+    sizes: ["10g"],
+    colors: [
+      { name: "Universal", hex: "#e8d5b0" },
+      { name: "Fair", hex: "#f5e8d8" },
+      { name: "Medium", hex: "#d4aa80" },
+    ],
+    description: "Finely-milled talc-free powder with light-diffusing pearls. Sets, blurs, and perfects without masking skin's natural luminosity.",
+    details: ["Talc-free formula", "Light-diffusing pearls", "Buildable coverage", "All skin types"],
+    images: ["powder"],
+    rating: 4.8, reviews: 198,
+    featured: false,
+  },
+  {
+    id: 11, collection: "beauty",
+    name: "Ritual Body Oil",
+    subtitle: "Neroli + Jojoba Blend",
+    price: 88,
+    badge: "Bestseller",
+    sizes: ["100ml","200ml"],
+    colors: [],
+    description: "An enveloping body oil of neroli, jojoba, and sweet almond. Deeply hydrating, fast-absorbing, and intoxicatingly scented — a daily ritual elevated.",
+    details: ["Neroli + Bergamot scent", "Jojoba + Sweet Almond", "Fast-absorbing", "Vegan + Cruelty-free"],
+    images: ["body-oil"],
+    rating: 4.9, reviews: 334,
+    featured: true,
+  },
+  // HOME
+  {
+    id: 12, collection: "home",
+    name: "Linen Throw Blanket",
+    subtitle: "Stonewashed Belgian Linen",
+    price: 195,
+    badge: null,
+    sizes: ["130×180cm","160×220cm"],
+    colors: [
+      { name: "Natural", hex: "#d4c5a9" },
+      { name: "Slate", hex: "#8a9aaa" },
+      { name: "Terracotta", hex: "#c4785a" },
+    ],
+    description: "Stonewashed Belgian linen, pre-washed for instant softness. A generous throw that softens with every use — draped on a sofa or wrapped around you.",
+    details: ["100% Belgian Linen", "Machine washable", "Pre-washed", "OEKO-TEX certified"],
+    images: ["throw"],
+    rating: 4.8, reviews: 145,
+    featured: false,
+  },
+  {
+    id: 13, collection: "home",
+    name: "Noir Candle Trio",
+    subtitle: "Concrete Vessels / 3 Scents",
+    price: 210,
+    badge: "Gift Ready",
+    sizes: ["Set of 3"],
+    colors: [],
+    description: "Three sculptural concrete vessels, each holding a distinct mood: Oud & Amber, White Tea, and Hinoki Forest. 60 hours of burn per candle.",
+    details: ["Soy wax blend", "Concrete vessels", "60hr burn time each", "Lead-free cotton wicks"],
+    images: ["candles"],
+    rating: 4.9, reviews: 267,
+    featured: true,
+  },
+  {
+    id: 14, collection: "home",
+    name: "Matte Ceramic Vase",
+    subtitle: "Hand-thrown / Matte Glaze",
+    price: 145,
+    badge: null,
+    sizes: ["Small","Medium","Large"],
+    colors: [
+      { name: "Chalk", hex: "#f0ece4" },
+      { name: "Sage", hex: "#9aaa9a" },
+      { name: "Onyx", hex: "#2a2a2a" },
+    ],
+    description: "Hand-thrown on a wheel, each piece subtly unique. A matte glaze in three tonalities — quiet objects that hold presence without noise.",
+    details: ["Hand-thrown stoneware", "Matte glaze finish", "Dishwasher safe", "Each piece unique"],
+    images: ["vase"],
+    rating: 4.7, reviews: 89,
+    featured: false,
+  },
+  {
+    id: 15, collection: "home",
+    name: "Merino Cushion Cover",
+    subtitle: "50×50cm / Extra-Fine Merino",
+    price: 120,
+    badge: null,
+    sizes: ["50×50cm"],
+    colors: [
+      { name: "Ivory", hex: "#f5ede0" },
+      { name: "Camel", hex: "#c9a880" },
+      { name: "Charcoal", hex: "#3a3a3a" },
+    ],
+    description: "Extra-fine merino in a generous gauge knit. Covered buttons at the back, supremely soft to the touch, and structured enough to hold its shape beautifully.",
+    details: ["100% Merino Wool", "Dry clean only", "Button closure", "Insert sold separately"],
+    images: ["cushion"],
+    rating: 4.8, reviews: 112,
+    featured: false,
+  },
+  {
+    id: 16, collection: "home",
+    name: "Walnut Serving Board",
+    subtitle: "Solid Black Walnut",
+    price: 165,
+    badge: "Handcrafted",
+    sizes: ["35×20cm","50×28cm"],
+    colors: [],
+    description: "Milled from a single plank of American black walnut. A serving board of uncommon grain and warmth — equally stunning on the table or hanging on a wall.",
+    details: ["Solid Black Walnut", "Food-safe oil finish", "Handcrafted in USA", "Each grain unique"],
+    images: ["board"],
+    rating: 4.9, reviews: 178,
+    featured: false,
+  },
+];
+
+// Placeholder image renderer — generates beautiful SVG placeholders
+function ProductImage({ type, className, style, dark }) {
+  const palettes = {
+    coat: { bg: "#c9a880", fg: "#5a3e28", label: "coat product shot" },
+    "coat-detail": { bg: "#d4b896", fg: "#5a3e28", label: "coat detail" },
+    "coat-model": { bg: "#8b7355", fg: "#f5f0e8", label: "model lifestyle" },
+    dress: { bg: "#e8d5b0", fg: "#8b6a3a", label: "dress product shot" },
+    "dress-detail": { bg: "#d4c4a0", fg: "#6a4a28", label: "fabric detail" },
+    tote: { bg: "#8b5e3c", fg: "#f5f0e8", label: "leather tote" },
+    "tote-detail": { bg: "#6a4228", fg: "#f5f0e8", label: "hardware detail" },
+    bodysuit: { bg: "#f5ede0", fg: "#8b7355", label: "bodysuit product" },
+    trousers: { bg: "#d4c5a9", fg: "#5a4a2a", label: "trousers product" },
+    blazer: { bg: "#f5f0e8", fg: "#3a3a3a", label: "blazer product" },
+    "face-oil": { bg: "#1a1a1a", fg: "#c9a85c", label: "face oil bottle" },
+    "lip-serum": { bg: "#2a1a1a", fg: "#c9876a", label: "lip serum tube" },
+    "eye-cream": { bg: "#0f0f1a", fg: "#c9a85c", label: "eye cream jar" },
+    powder: { bg: "#f5e8d8", fg: "#8b6a50", label: "setting powder" },
+    "body-oil": { bg: "#1a150f", fg: "#c9a85c", label: "body oil bottle" },
+    throw: { bg: "#d4c5a9", fg: "#5a4a2a", label: "linen throw" },
+    candles: { bg: "#2a2a2a", fg: "#c9a85c", label: "concrete candles" },
+    vase: { bg: "#f0ece4", fg: "#6a6a5a", label: "ceramic vase" },
+    cushion: { bg: "#f5ede0", fg: "#8b7355", label: "merino cushion" },
+    board: { bg: "#6a4228", fg: "#d4b896", label: "walnut board" },
+  };
+  const p = palettes[type] || { bg: "#1a1a1a", fg: "#c9a85c", label: type };
+  return (
+    <div className={className} style={{ background: p.bg, position: "relative", overflow: "hidden", ...style }}>
+      <svg width="100%" height="100%" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="500" fill={p.bg} />
+        {/* Diagonal stripe texture */}
+        <pattern id={`stripe-${type}`} width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <rect width="20" height="20" fill={p.bg} />
+          <rect width="1" height="20" fill={p.fg} opacity="0.08" />
+        </pattern>
+        <rect width="400" height="500" fill={`url(#stripe-${type})`} />
+        {/* Center label */}
+        <text x="200" y="240" textAnchor="middle" fill={p.fg} opacity="0.5" fontFamily="monospace" fontSize="11" fontWeight="400" letterSpacing="2">
+          {p.label.toUpperCase()}
+        </text>
+        <text x="200" y="258" textAnchor="middle" fill={p.fg} opacity="0.3" fontFamily="monospace" fontSize="9">
+          drop product image here
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+Object.assign(window, { STORE_CONFIG, COLLECTIONS, PRODUCTS, ProductImage });
