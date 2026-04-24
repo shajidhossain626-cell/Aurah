@@ -35,8 +35,5 @@
       "src": "/(.*)",
       "dest": "/public/index.html"
     }
-  ],
-  "env": {
-    "ADMIN_TOKEN": "@aurah_admin_token"
-  }
+  ]
 }
