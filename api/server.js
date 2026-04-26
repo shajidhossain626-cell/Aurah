@@ -9,16 +9,17 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // ── Paths ─────────────────────────────────────────────────
-const DATA_DIR = path.join(__dirname, "../data");
-const PRODUCTS_FILE = path.join(DATA_DIR, "products.json");
-const SETTINGS_FILE = path.join(DATA_DIR, "settings.json");
-const ORDERS_FILE = path.join(DATA_DIR, "orders.json");
-const CATEGORIES_FILE = path.join(DATA_DIR, "categories.json");
-const HOMEPAGE_FILE = path.join(DATA_DIR, "homepage.json");
-const UPLOADS_DIR = path.join(__dirname, "../public/uploads");
+const DATA_DIR    = path.join(__dirname, "../data");
+const PRODUCTS_FILE  = path.join(DATA_DIR, "products.json");
+const SETTINGS_FILE  = path.join(DATA_DIR, "settings.json");
+const ORDERS_FILE    = path.join(DATA_DIR, "orders.json");
+const CATEGORIES_FILE= path.join(DATA_DIR, "categories.json");
+const HOMEPAGE_FILE  = path.join(DATA_DIR, "homepage.json");
+const PUBLIC_DIR  = path.join(__dirname, "../public");
+const UPLOADS_DIR = path.join(PUBLIC_DIR, "uploads");
 
-// ── Ensure directories & seed data ───────────────────────
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+// ── Ensure dirs & seed data ───────────────────────────────
+if (!fs.existsSync(DATA_DIR))    fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 
 function seedIfMissing(file, defaultData) {
@@ -27,26 +28,19 @@ function seedIfMissing(file, defaultData) {
   }
 }
 
-seedIfMissing(PRODUCTS_FILE, require("./seed-products.js"));
+seedIfMissing(PRODUCTS_FILE,   require("./seed-products.js"));
 seedIfMissing(CATEGORIES_FILE, [
   { id: "fashion", label: "Fashion", count: 6 },
-  { id: "beauty", label: "Beauty", count: 5 },
-  { id: "home", label: "Home", count: 5 },
+  { id: "beauty",  label: "Beauty",  count: 5 },
+  { id: "home",    label: "Home",    count: 5 },
 ]);
 seedIfMissing(SETTINGS_FILE, {
-  storeName: "AURAH",
-  tagline: "Curated for the discerning few.",
-  accentColor: "#c9a85c",
-  theme: "dark",
-  fontPair: "cormorant",
-  heroLayout: "split",
-  cardRadius: 0,
-  email: "hello@aurahstudio.co",
-  instagram: "@aurahstudio",
-  currency: "USD",
-  currencySymbol: "$",
-  freeShippingThreshold: 150,
-  shippingCost: 18,
+  storeName: "AURAH", tagline: "Curated for the discerning few.",
+  accentColor: "#c9a85c", theme: "dark", fontPair: "cormorant",
+  heroLayout: "split", cardRadius: 0,
+  email: "hello@aurahstudio.co", instagram: "@aurahstudio",
+  currency: "USD", currencySymbol: "$",
+  freeShippingThreshold: 150, shippingCost: 18,
 });
 seedIfMissing(ORDERS_FILE, []);
 seedIfMissing(HOMEPAGE_FILE, {
@@ -54,26 +48,23 @@ seedIfMissing(HOMEPAGE_FILE, {
     badge: "Spring Collection 2026",
     headline: "Dressed in Intention.",
     subtext: "Premium fashion, beauty, and home essentials — designed for those who choose quality over quantity.",
-    ctaText: "Shop Collection",
-    ctaSecondary: "Explore Lookbook",
+    ctaText: "Shop Collection", ctaSecondary: "Explore Lookbook",
   },
-  marquee: [
-    "Free Shipping on $150+", "·", "New Arrivals Weekly", "·",
-    "30-Day Returns", "·", "Sustainably Sourced", "·", "Handcrafted Quality", "·",
-  ],
+  marquee: ["Free Shipping on $150+","·","New Arrivals Weekly","·","30-Day Returns","·","Sustainably Sourced","·","Handcrafted Quality","·"],
   testimonials: [
-    { quote: "The wrap coat has completely redefined my wardrobe. I wear it every day.", author: "Margaux D.", role: "Fashion Editor, Paris", rating: 5, product: "Atelier Wrap Coat" },
+    { quote: "The wrap coat has completely redefined my wardrobe.", author: "Margaux D.", role: "Fashion Editor, Paris", rating: 5, product: "Atelier Wrap Coat" },
     { quote: "The face oil is the only product I've repurchased more than three times.", author: "Charlotte H.", role: "Creative Director, London", rating: 5, product: "Radiance Face Oil" },
-    { quote: "Everything about these candles is considered — the vessels, the scent, the burn.", author: "Elena V.", role: "Interior Stylist, Milan", rating: 5, product: "Noir Candle Trio" },
   ],
 });
 
 // ── Middleware ────────────────────────────────────────────
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "../public")));
 
-// Image upload
+// ── Serve static files ────────────────────────────────────
+app.use(express.static(PUBLIC_DIR));
+
+// ── Image upload ──────────────────────────────────────────
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, UPLOADS_DIR),
   filename: (req, file, cb) => {
@@ -84,11 +75,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
 // ── Helpers ───────────────────────────────────────────────
-const readJSON = (file) => JSON.parse(fs.readFileSync(file, "utf8"));
+const readJSON  = (file) => JSON.parse(fs.readFileSync(file, "utf8"));
 const writeJSON = (file, data) => fs.writeFileSync(file, JSON.stringify(data, null, 2));
 
-// ── Admin Auth Middleware (simple token) ──────────────────
+// ── Admin Auth ────────────────────────────────────────────
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "aurah-admin-secret-2026";
+
 function requireAdmin(req, res, next) {
   const token = req.headers["x-admin-token"] || req.query.token;
   if (token !== ADMIN_TOKEN) return res.status(401).json({ error: "Unauthorized" });
@@ -98,8 +90,6 @@ function requireAdmin(req, res, next) {
 // ═══════════════════════════════════════════════════════════
 // PUBLIC API
 // ═══════════════════════════════════════════════════════════
-
-// Products
 app.get("/api/products", (req, res) => {
   const products = readJSON(PRODUCTS_FILE);
   const { collection, featured } = req.query;
@@ -116,22 +106,10 @@ app.get("/api/products/:id", (req, res) => {
   res.json(product);
 });
 
-// Categories
-app.get("/api/categories", (req, res) => {
-  res.json(readJSON(CATEGORIES_FILE));
-});
+app.get("/api/categories", (req, res) => res.json(readJSON(CATEGORIES_FILE)));
+app.get("/api/settings",   (req, res) => res.json(readJSON(SETTINGS_FILE)));
+app.get("/api/homepage",   (req, res) => res.json(readJSON(HOMEPAGE_FILE)));
 
-// Settings (public — for store to read)
-app.get("/api/settings", (req, res) => {
-  res.json(readJSON(SETTINGS_FILE));
-});
-
-// Homepage content
-app.get("/api/homepage", (req, res) => {
-  res.json(readJSON(HOMEPAGE_FILE));
-});
-
-// Place order
 app.post("/api/orders", (req, res) => {
   const orders = readJSON(ORDERS_FILE);
   const newOrder = {
@@ -146,22 +124,17 @@ app.post("/api/orders", (req, res) => {
 });
 
 // ═══════════════════════════════════════════════════════════
-// ADMIN API  (all require X-Admin-Token header)
+// ADMIN API
 // ═══════════════════════════════════════════════════════════
-
-// Auth check
 app.post("/api/admin/login", (req, res) => {
   const { token } = req.body;
   if (token === ADMIN_TOKEN) res.json({ success: true });
   else res.status(401).json({ error: "Invalid token" });
 });
 
-// ── Products CRUD ─────────────────────────────────────────
-app.get("/api/admin/products", requireAdmin, (req, res) => {
-  res.json(readJSON(PRODUCTS_FILE));
-});
-
-app.post("/api/admin/products", requireAdmin, (req, res) => {
+// Products
+app.get("/api/admin/products",    requireAdmin, (req, res) => res.json(readJSON(PRODUCTS_FILE)));
+app.post("/api/admin/products",   requireAdmin, (req, res) => {
   const products = readJSON(PRODUCTS_FILE);
   const maxId = products.reduce((m, p) => Math.max(m, p.id), 0);
   const product = { id: maxId + 1, ...req.body };
@@ -169,7 +142,6 @@ app.post("/api/admin/products", requireAdmin, (req, res) => {
   writeJSON(PRODUCTS_FILE, products);
   res.json(product);
 });
-
 app.put("/api/admin/products/:id", requireAdmin, (req, res) => {
   const products = readJSON(PRODUCTS_FILE);
   const idx = products.findIndex(p => p.id === parseInt(req.params.id));
@@ -178,33 +150,27 @@ app.put("/api/admin/products/:id", requireAdmin, (req, res) => {
   writeJSON(PRODUCTS_FILE, products);
   res.json(products[idx]);
 });
-
 app.delete("/api/admin/products/:id", requireAdmin, (req, res) => {
   const products = readJSON(PRODUCTS_FILE);
-  const filtered = products.filter(p => p.id !== parseInt(req.params.id));
-  writeJSON(PRODUCTS_FILE, filtered);
+  writeJSON(PRODUCTS_FILE, products.filter(p => p.id !== parseInt(req.params.id)));
   res.json({ success: true });
 });
 
-// ── Image Upload ──────────────────────────────────────────
+// Image upload
 app.post("/api/admin/upload", requireAdmin, upload.single("image"), (req, res) => {
   if (!req.file) return res.status(400).json({ error: "No file" });
   res.json({ url: `/uploads/${req.file.filename}` });
 });
 
-// ── Categories CRUD ───────────────────────────────────────
-app.get("/api/admin/categories", requireAdmin, (req, res) => {
-  res.json(readJSON(CATEGORIES_FILE));
-});
-
-app.post("/api/admin/categories", requireAdmin, (req, res) => {
+// Categories
+app.get("/api/admin/categories",    requireAdmin, (req, res) => res.json(readJSON(CATEGORIES_FILE)));
+app.post("/api/admin/categories",   requireAdmin, (req, res) => {
   const cats = readJSON(CATEGORIES_FILE);
-  const cat = { id: req.body.label.toLowerCase().replace(/\s+/g, "-"), ...req.body, count: 0 };
+  const cat = { id: (req.body.id || req.body.label.toLowerCase().replace(/\s+/g, "-")), ...req.body, count: 0 };
   cats.push(cat);
   writeJSON(CATEGORIES_FILE, cats);
   res.json(cat);
 });
-
 app.put("/api/admin/categories/:id", requireAdmin, (req, res) => {
   const cats = readJSON(CATEGORIES_FILE);
   const idx = cats.findIndex(c => c.id === req.params.id);
@@ -213,36 +179,27 @@ app.put("/api/admin/categories/:id", requireAdmin, (req, res) => {
   writeJSON(CATEGORIES_FILE, cats);
   res.json(cats[idx]);
 });
-
 app.delete("/api/admin/categories/:id", requireAdmin, (req, res) => {
-  const cats = readJSON(CATEGORIES_FILE);
-  writeJSON(CATEGORIES_FILE, cats.filter(c => c.id !== req.params.id));
+  writeJSON(CATEGORIES_FILE, readJSON(CATEGORIES_FILE).filter(c => c.id !== req.params.id));
   res.json({ success: true });
 });
 
-// ── Settings ──────────────────────────────────────────────
+// Settings
 app.put("/api/admin/settings", requireAdmin, (req, res) => {
-  const current = readJSON(SETTINGS_FILE);
-  const updated = { ...current, ...req.body };
+  const updated = { ...readJSON(SETTINGS_FILE), ...req.body };
   writeJSON(SETTINGS_FILE, updated);
   res.json(updated);
 });
 
-// ── Homepage ──────────────────────────────────────────────
+// Homepage
 app.put("/api/admin/homepage", requireAdmin, (req, res) => {
-  const current = readJSON(HOMEPAGE_FILE);
-  const updated = { ...current, ...req.body };
+  const updated = { ...readJSON(HOMEPAGE_FILE), ...req.body };
   writeJSON(HOMEPAGE_FILE, updated);
   res.json(updated);
 });
 
-// ── Orders ────────────────────────────────────────────────
-app.get("/api/admin/orders", requireAdmin, (req, res) => {
-  const orders = readJSON(ORDERS_FILE);
-  const { status } = req.query;
-  res.json(status ? orders.filter(o => o.status === status) : orders);
-});
-
+// Orders
+app.get("/api/admin/orders",    requireAdmin, (req, res) => res.json(readJSON(ORDERS_FILE)));
 app.put("/api/admin/orders/:id", requireAdmin, (req, res) => {
   const orders = readJSON(ORDERS_FILE);
   const idx = orders.findIndex(o => o.id === req.params.id);
@@ -252,13 +209,18 @@ app.put("/api/admin/orders/:id", requireAdmin, (req, res) => {
   res.json(orders[idx]);
 });
 
-// ── Catch-all → serve store ───────────────────────────────
+// ── Admin panel HTML ──────────────────────────────────────
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(PUBLIC_DIR, "admin", "index.html"));
+});
+
+// ── SPA fallback ──────────────────────────────────────────
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/index.html"));
+  res.sendFile(path.join(PUBLIC_DIR, "index.html"));
 });
 
 app.listen(PORT, () => {
-  console.log(`AURAH server running on http://localhost:${PORT}`);
-  console.log(`Admin panel: http://localhost:${PORT}/admin`);
-  console.log(`Admin token: ${ADMIN_TOKEN}`);
+  console.log(`AURAH running on http://localhost:${PORT}`);
+  console.log(`Admin: http://localhost:${PORT}/admin`);
+  console.log(`Token: ${ADMIN_TOKEN}`);
 });
