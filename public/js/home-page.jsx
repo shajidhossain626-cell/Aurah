@@ -19,104 +19,10 @@ function HomePage({ onNavigate, onAddToCart, onToggleWishlist, wishlistIds, them
   return (
     <div>
       {/* ── HERO ── */}
-      <section style={{
-        position: "relative", height: "100vh", minHeight: "640px",
-        display: "flex", alignItems: "center", overflow: "hidden",
-        background: isDark ? "#0c0b09" : "#f7f3ec",
-      }}>
-        {/* BG depth layers */}
-        <div style={{
-          position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none",
-        }}>
-          {/* Far layer — gradient blob */}
-          <div style={{
-            position: "absolute", width: "80vw", height: "80vw", borderRadius: "50%",
-            background: isDark
-              ? "radial-gradient(circle, rgba(201,168,92,0.04) 0%, transparent 70%)"
-              : "radial-gradient(circle, rgba(201,168,92,0.12) 0%, transparent 70%)",
-            top: "50%", left: "50%", transform: `translate(-50%, -50%) translate(${heroParallax.x * 0.3}px, ${heroParallax.y * 0.3}px)`,
-            transition: "transform 0.8s ease",
-          }} />
-          {/* Mid layer — product placeholder */}
-          <div style={{
-            position: "absolute", right: "0", top: "0", bottom: "0", width: "52%",
-            transform: `translate(${heroParallax.x * 0.5}px, ${heroParallax.y * 0.3}px)`,
-            transition: "transform 0.6s ease",
-          }}>
-            <ProductImage type="coat" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-            {/* Glass overlay on image */}
-            <div style={{
-              position: "absolute", inset: 0,
-              background: isDark
-                ? "linear-gradient(to right, #0c0b09 0%, transparent 30%)"
-                : "linear-gradient(to right, #f7f3ec 0%, transparent 30%)",
-            }} />
-          </div>
-          {/* Near layer — floating accent card */}
-          <div style={{
-            position: "absolute", bottom: "15%", right: "6%",
-            transform: `translate(${heroParallax.x * 0.8}px, ${heroParallax.y * 0.6}px)`,
-            transition: "transform 0.4s ease",
-          }}>
-            <div style={{
-              background: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
-              backdropFilter: "blur(20px)",
-              border: `1px solid ${isDark ? "rgba(201,168,92,0.2)" : "rgba(0,0,0,0.08)"}`,
-              padding: "20px 24px", minWidth: "200px",
-              boxShadow: "0 24px 48px rgba(0,0,0,0.2)",
-            }}>
-              <p style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.5, marginBottom: "8px" }}>Now Available</p>
-              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "18px", marginBottom: "4px" }}>Atelier Wrap Coat</p>
-              <p style={{ fontSize: "14px", color: "#c9a85c", fontWeight: 600 }}>$890</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Hero Text */}
-        <div style={{ position: "relative", zIndex: 2, maxWidth: "1280px", margin: "0 auto", padding: "0 32px", width: "100%" }}>
-          <div style={{ maxWidth: "540px" }}>
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: "8px",
-              marginBottom: "24px", opacity: 0.6,
-            }}>
-              <div style={{ width: "32px", height: "1px", background: "#c9a85c" }} />
-              <span style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase" }}>Spring Collection 2026</span>
-            </div>
-            <h1 style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: "clamp(52px, 7vw, 92px)",
-              fontWeight: 400, lineHeight: "1.05",
-              letterSpacing: "-0.01em",
-              marginBottom: "28px",
-            }}>
-              Dressed<br />in<br /><em style={{ color: "#c9a85c" }}>Intention.</em>
-            </h1>
-            <p style={{ fontSize: "15px", lineHeight: "1.8", opacity: 0.55, marginBottom: "40px", maxWidth: "380px" }}>
-              Premium fashion, beauty, and home essentials — designed for those who choose quality over quantity.
-            </p>
-            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-              <Button variant="primary" size="lg" onClick={() => onNavigate("collection")}>
-                Shop Collection <Icons.ArrowRight />
-              </Button>
-              <Button variant="secondary" size="lg" onClick={() => onNavigate("collection", { filter: "fashion" })}>
-                Explore Lookbook
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div style={{
-          position: "absolute", bottom: "32px", left: "50%", transform: "translateX(-50%)",
-          display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", opacity: 0.35,
-        }}>
-          <div style={{ width: "1px", height: "40px", background: "currentColor", animation: "scrollPulse 2s ease infinite" }} />
-          <span style={{ fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase" }}>Scroll</span>
-        </div>
-      </section>
+      <HeroSection isDark={isDark} heroParallax={heroParallax} onNavigate={onNavigate} />
 
       {/* ── FEATURED CATEGORIES ── */}
-      <section style={{ padding: "100px 32px", maxWidth: "1280px", margin: "0 auto" }}>
+      <section style={{ padding: "clamp(48px,8vw,100px) clamp(16px,4vw,32px)", maxWidth: "1280px", margin: "0 auto" }}>
         <Reveal>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "48px" }}>
             <div>
@@ -140,7 +46,7 @@ function HomePage({ onNavigate, onAddToCart, onToggleWishlist, wishlistIds, them
       </section>
 
       {/* ── FEATURED PRODUCTS ── */}
-      <section style={{ padding: "0 32px 100px", maxWidth: "1280px", margin: "0 auto" }}>
+      <section style={{ padding: "0 clamp(16px,4vw,32px) clamp(48px,8vw,100px)", maxWidth: "1280px", margin: "0 auto" }}>
         <Reveal>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "48px" }}>
             <div>
@@ -205,7 +111,7 @@ function HomePage({ onNavigate, onAddToCart, onToggleWishlist, wishlistIds, them
       </div>
 
       {/* ── TESTIMONIALS ── */}
-      <section style={{ padding: "100px 32px", maxWidth: "1280px", margin: "0 auto" }}>
+      <section style={{ padding: "clamp(48px,8vw,100px) clamp(16px,4vw,32px)", maxWidth: "1280px", margin: "0 auto" }}>
         <Reveal style={{ textAlign: "center", marginBottom: "60px" }}>
           <p style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#c9a85c", marginBottom: "12px" }}>What They Say</p>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 400 }}>Worn & Loved</h2>
@@ -235,7 +141,7 @@ function HomePage({ onNavigate, onAddToCart, onToggleWishlist, wishlistIds, them
 
       {/* ── EMAIL CAPTURE ── */}
       <section style={{
-        padding: "80px 32px",
+        padding: "clamp(48px,8vw,80px) clamp(16px,4vw,32px)",
         background: isDark ? "#100f0d" : "#f0ece4",
         textAlign: "center",
       }}>
@@ -256,6 +162,170 @@ function HomePage({ onNavigate, onAddToCart, onToggleWishlist, wishlistIds, them
         </Reveal>
       </section>
     </div>
+  );
+}
+
+// ── Hero Section (mobile-fixed) ───────────────────────────
+function HeroSection({ isDark, heroParallax, onNavigate }) {
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 768);
+  React.useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+
+  if (isMobile) {
+    // ── MOBILE HERO ─────────────────────────────────────────
+    return (
+      <section style={{
+        position: "relative",
+        background: isDark ? "#0c0b09" : "#f7f3ec",
+        overflow: "hidden",
+        minHeight: "100svh",
+        display: "flex", flexDirection: "column",
+      }}>
+        {/* Full-bleed image top half */}
+        <div style={{ position: "relative", width: "100%", height: "55vw", minHeight: "260px", maxHeight: "380px", flexShrink: 0 }}>
+          <ProductImage type="coat" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
+          {/* Bottom fade into bg */}
+          <div style={{
+            position: "absolute", bottom: 0, left: 0, right: 0, height: "60%",
+            background: isDark
+              ? "linear-gradient(to top, #0c0b09 0%, transparent 100%)"
+              : "linear-gradient(to top, #f7f3ec 0%, transparent 100%)",
+          }} />
+          {/* Floating product card — top right */}
+          <div style={{ position: "absolute", top: "16px", right: "16px", zIndex: 5 }}>
+            <div style={{
+              background: isDark ? "rgba(12,11,9,0.8)" : "rgba(247,243,236,0.85)",
+              backdropFilter: "blur(12px)",
+              border: `1px solid ${isDark ? "rgba(201,168,92,0.25)" : "rgba(0,0,0,0.08)"}`,
+              padding: "12px 16px",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
+            }}>
+              <p style={{ fontSize: "8px", letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.5, marginBottom: "4px" }}>Now Available</p>
+              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "14px", marginBottom: "2px" }}>Atelier Wrap Coat</p>
+              <p style={{ fontSize: "12px", color: "#c9a85c", fontWeight: 600 }}>$890</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Text content below image */}
+        <div style={{ padding: "24px 24px 48px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "16px", opacity: 0.6 }}>
+            <div style={{ width: "24px", height: "1px", background: "#c9a85c" }} />
+            <span style={{ fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase" }}>Spring Collection 2026</span>
+          </div>
+          <h1 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: "clamp(44px, 14vw, 64px)",
+            fontWeight: 400, lineHeight: "1.05",
+            letterSpacing: "-0.01em",
+            marginBottom: "16px",
+          }}>
+            Dressed<br />in<br /><em style={{ color: "#c9a85c" }}>Intention.</em>
+          </h1>
+          <p style={{ fontSize: "14px", lineHeight: "1.7", opacity: 0.55, marginBottom: "28px" }}>
+            Premium fashion, beauty, and home essentials — for those who choose quality.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            <Button variant="primary" size="md" style={{ width: "100%", justifyContent: "center" }} onClick={() => onNavigate("collection")}>
+              Shop Collection <Icons.ArrowRight />
+            </Button>
+            <Button variant="secondary" size="md" style={{ width: "100%", justifyContent: "center" }} onClick={() => onNavigate("collection", { filter: "fashion" })}>
+              Explore Lookbook
+            </Button>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div style={{ position: "absolute", bottom: "16px", left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", opacity: 0.3 }}>
+          <div style={{ width: "1px", height: "28px", background: "currentColor", animation: "scrollPulse 2s ease infinite" }} />
+          <span style={{ fontSize: "8px", letterSpacing: "0.2em", textTransform: "uppercase" }}>Scroll</span>
+        </div>
+      </section>
+    );
+  }
+
+  // ── DESKTOP HERO ──────────────────────────────────────────
+  return (
+    <section style={{
+      position: "relative", height: "100vh", minHeight: "640px",
+      display: "flex", alignItems: "center", overflow: "hidden",
+      background: isDark ? "#0c0b09" : "#f7f3ec",
+    }}>
+      <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
+        <div style={{
+          position: "absolute", width: "80vw", height: "80vw", borderRadius: "50%",
+          background: isDark
+            ? "radial-gradient(circle, rgba(201,168,92,0.04) 0%, transparent 70%)"
+            : "radial-gradient(circle, rgba(201,168,92,0.12) 0%, transparent 70%)",
+          top: "50%", left: "50%",
+          transform: `translate(-50%, -50%) translate(${heroParallax.x * 0.3}px, ${heroParallax.y * 0.3}px)`,
+          transition: "transform 0.8s ease",
+        }} />
+        <div style={{
+          position: "absolute", right: "0", top: "0", bottom: "0", width: "52%",
+          transform: `translate(${heroParallax.x * 0.5}px, ${heroParallax.y * 0.3}px)`,
+          transition: "transform 0.6s ease",
+        }}>
+          <ProductImage type="coat" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <div style={{
+            position: "absolute", inset: 0,
+            background: isDark
+              ? "linear-gradient(to right, #0c0b09 0%, transparent 30%)"
+              : "linear-gradient(to right, #f7f3ec 0%, transparent 30%)",
+          }} />
+        </div>
+        <div style={{
+          position: "absolute", bottom: "15%", right: "6%",
+          transform: `translate(${heroParallax.x * 0.8}px, ${heroParallax.y * 0.6}px)`,
+          transition: "transform 0.4s ease",
+        }}>
+          <div style={{
+            background: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
+            backdropFilter: "blur(20px)",
+            border: `1px solid ${isDark ? "rgba(201,168,92,0.2)" : "rgba(0,0,0,0.08)"}`,
+            padding: "20px 24px", minWidth: "200px",
+            boxShadow: "0 24px 48px rgba(0,0,0,0.2)",
+          }}>
+            <p style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.5, marginBottom: "8px" }}>Now Available</p>
+            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "18px", marginBottom: "4px" }}>Atelier Wrap Coat</p>
+            <p style={{ fontSize: "14px", color: "#c9a85c", fontWeight: 600 }}>$890</p>
+          </div>
+        </div>
+      </div>
+      <div style={{ position: "relative", zIndex: 2, maxWidth: "1280px", margin: "0 auto", padding: "0 32px", width: "100%" }}>
+        <div style={{ maxWidth: "540px" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "24px", opacity: 0.6 }}>
+            <div style={{ width: "32px", height: "1px", background: "#c9a85c" }} />
+            <span style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase" }}>Spring Collection 2026</span>
+          </div>
+          <h1 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: "clamp(52px, 7vw, 92px)",
+            fontWeight: 400, lineHeight: "1.05", letterSpacing: "-0.01em", marginBottom: "28px",
+          }}>
+            Dressed<br />in<br /><em style={{ color: "#c9a85c" }}>Intention.</em>
+          </h1>
+          <p style={{ fontSize: "15px", lineHeight: "1.8", opacity: 0.55, marginBottom: "40px", maxWidth: "380px" }}>
+            Premium fashion, beauty, and home essentials — designed for those who choose quality over quantity.
+          </p>
+          <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+            <Button variant="primary" size="lg" onClick={() => onNavigate("collection")}>
+              Shop Collection <Icons.ArrowRight />
+            </Button>
+            <Button variant="secondary" size="lg" onClick={() => onNavigate("collection", { filter: "fashion" })}>
+              Explore Lookbook
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div style={{ position: "absolute", bottom: "32px", left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", opacity: 0.35 }}>
+        <div style={{ width: "1px", height: "40px", background: "currentColor", animation: "scrollPulse 2s ease infinite" }} />
+        <span style={{ fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase" }}>Scroll</span>
+      </div>
+    </section>
   );
 }
 

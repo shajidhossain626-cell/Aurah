@@ -77,7 +77,33 @@ function Button({ children, variant = "primary", size = "md", onClick, style, cl
   );
 }
 
-// ── Star Rating ───────────────────────────────────────────
+// ── Back Button ───────────────────────────────────────────
+function BackButton({ onNavigate, to = "home", label = "Back", theme }) {
+  const isDark = theme === "dark";
+  const [hovered, setHovered] = React.useState(false);
+  return (
+    <button
+      onClick={() => onNavigate(to)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: "inline-flex", alignItems: "center", gap: "6px",
+        background: "none", border: "none", cursor: "pointer",
+        color: "inherit", fontFamily: "inherit",
+        fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase",
+        opacity: hovered ? 1 : 0.5,
+        transition: "opacity 0.2s, transform 0.2s",
+        transform: hovered ? "translateX(-3px)" : "translateX(0)",
+        padding: "0",
+      }}
+    >
+      <Icons.ArrowLeft />
+      {label}
+    </button>
+  );
+}
+
+
 function StarRating({ rating, reviews }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
@@ -240,7 +266,7 @@ function Nav({ page, onNavigate, cartCount, wishlistCount, theme, onToggleTheme,
         borderBottom: scrolled || page !== "home" ? `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}` : "none",
         transition: "all 0.35s ease",
       }}>
-        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 32px", height: "64px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 clamp(16px,4vw,32px)", height: "64px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           {/* Logo */}
           <button onClick={() => onNavigate("home")} style={{ background: "none", border: "none", cursor: "pointer", color: "inherit" }}>
             <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", letterSpacing: "0.18em", fontWeight: 500 }}>AURAH</span>
@@ -437,4 +463,4 @@ function EmailPopup({ theme, onDismiss }) {
   );
 }
 
-Object.assign(window, { Icons, Button, Badge, StarRating, ProductCard, Nav, Footer, TrustBadges, Reveal, EmailPopup });
+Object.assign(window, { Icons, Button, BackButton, Badge, StarRating, ProductCard, Nav, Footer, TrustBadges, Reveal, EmailPopup });

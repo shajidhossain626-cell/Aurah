@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,12 +36,8 @@
   @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes popupIn { from { opacity: 0; transform: scale(0.96) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
   .page-enter { animation: fadeIn 0.45s ease forwards; }
-  #loading-screen {
-    position: fixed; inset: 0; background: #0c0b09;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 9999; transition: opacity 0.5s ease;
-  }
-  #loading-screen.fade { opacity: 0; pointer-events: none; }
+
+  /* Responsive */
   @media (max-width: 900px) {
     .product-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
     .category-grid { grid-template-columns: 1fr !important; }
@@ -56,48 +52,21 @@
   }
   @media (max-width: 600px) {
     .product-grid-4 { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
-    /* Email capture bar stacks on mobile */
-    .email-row { flex-direction: column !important; }
-    .email-row input { border-right: 1px solid rgba(255,255,255,.1) !important; border-bottom: none !important; }
-    /* Category cards taller on mobile */
-    .category-grid > * { min-height: 280px !important; }
-    /* Footer stacks fully */
-    .footer-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
-    /* Checkout grid stacks */
-    .checkout-grid { grid-template-columns: 1fr !important; }
-    /* Trust badges 2 columns on very small */
-    .trust-grid { grid-template-columns: repeat(2,1fr) !important; }
   }
 </style>
 </head>
 <body class="dark">
 
-<!-- Loading screen -->
-<div id="loading-screen">
-  <div style="text-align:center">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:32px;letter-spacing:0.2em;color:#f0ece4;margin-bottom:16px">AURAH</div>
-    <div style="width:40px;height:1px;background:#c9a85c;margin:0 auto;animation:marquee 1s linear infinite"></div>
-  </div>
-</div>
-
 <div id="root"></div>
 
-<!-- Store modules -->
-<script type="text/babel" src="/js/store-data.jsx"></script>
-<script type="text/babel" src="/js/components.jsx"></script>
-<script type="text/babel" src="/js/home-page.jsx"></script>
-<script type="text/babel" src="/js/shop-pages.jsx"></script>
-<script type="text/babel" src="/js/cart-checkout.jsx"></script>
-<script type="text/babel" src="/js/tweaks-panel.jsx"></script>
+<script type="text/babel" src="public/js/store-data.jsx"></script>
+<script type="text/babel" src="public/js/components.jsx"></script>
+<script type="text/babel" src="public/js/home-page.jsx"></script>
+<script type="text/babel" src="public/js/shop-pages.jsx"></script>
+<script type="text/babel" src="public/js/cart-checkout.jsx"></script>
+<script type="text/babel" src="public/js/tweaks-panel.jsx"></script>
 
 <script type="text/babel">
-// ── API helpers ──────────────────────────────────────────
-const API = {
-  get: (path) => fetch(`/api${path}`).then(r => r.json()),
-  post: (path, body) => fetch(`/api${path}`, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body) }).then(r => r.json()),
-};
-
-// ── Default tweaks (overridden by API settings) ───────────
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "accentColor": "#c9a85c",
   "storeName": "AURAH",
@@ -118,50 +87,42 @@ function App() {
   const [cartOpen, setCartOpen] = React.useState(false);
   const [showPopup, setShowPopup] = React.useState(false);
   const [lastOrder, setLastOrder] = React.useState(null);
-  const [storeData, setStoreData] = React.useState({ products: window.PRODUCTS || [], categories: window.COLLECTIONS || [], settings: {}, homepage: {} });
+  const prevPage = React.useRef("home");
 
-  // Load live data from API
+  // Theme sync
   React.useEffect(() => {
-    Promise.all([
-      API.get("/products"),
-      API.get("/categories"),
-      API.get("/settings"),
-      API.get("/homepage"),
-    ]).then(([products, categories, settings, homepage]) => {
-      // Merge "all" category
-      const cats = [{ id:"all", label:"All", count: products.length }, ...categories];
-      setStoreData({ products, categories: cats, settings, homepage });
-      // Apply settings to tweaks
-      if (settings.accentColor) setTweaks({ accentColor: settings.accentColor });
-      if (settings.storeName) setTweaks({ storeName: settings.storeName });
-      if (settings.theme) { setTheme(settings.theme); setTweaks({ theme: settings.theme }); }
-      if (settings.fontPair) setTweaks({ fontPair: settings.fontPair });
-      if (settings.heroLayout) setTweaks({ heroLayout: settings.heroLayout });
-      if (settings.cardRadius !== undefined) setTweaks({ cardRadius: settings.cardRadius });
-      // Override global PRODUCTS / COLLECTIONS with live data
-      window.PRODUCTS = products;
-      window.COLLECTIONS = cats;
-    }).catch(console.error).finally(() => {
-      // Fade out loading screen
-      const ls = document.getElementById("loading-screen");
-      if (ls) { ls.classList.add("fade"); setTimeout(() => ls.remove(), 600); }
-    });
+    document.body.className = theme;
+  }, [theme]);
+
+  // Popup timer
+  React.useEffect(() => {
+    const t = setTimeout(() => setShowPopup(true), 6000);
+    return () => clearTimeout(t);
   }, []);
 
-  React.useEffect(() => { document.body.className = theme; }, [theme]);
-  React.useEffect(() => { const t = setTimeout(() => setShowPopup(true), 6000); return () => clearTimeout(t); }, []);
-  React.useEffect(() => { window.scrollTo({ top: 0, behavior: "smooth" }); }, [page]);
+  // Scroll to top on page change
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [page]);
 
-  window.__appContext = { tweaks, storeData };
+  // Expose context for shared components
+  window.__appContext = { tweaks };
 
-  const navigate = (p, params = {}) => { setPage(p); setPageParams(params); };
+  const navigate = (p, params = {}) => {
+    prevPage.current = page;
+    setPage(p);
+    setPageParams(params);
+  };
 
   const addToCart = (product, size, color, qty = 1) => {
     setCart(prev => {
       const key = `${product.id}-${size}-${color}`;
       const existing = prev.find(i => `${i.id}-${i.size}-${i.color}` === key);
       if (existing) return prev.map(i => `${i.id}-${i.size}-${i.color}` === key ? { ...i, qty: i.qty + qty } : i);
-      return [...prev, { id: product.id, name: product.name, price: product.price, image: product.images[0], size, color, qty }];
+      return [...prev, {
+        id: product.id, name: product.name, price: product.price,
+        image: product.images[0], size, color, qty,
+      }];
     });
     setCartOpen(true);
   };
@@ -170,23 +131,34 @@ function App() {
     if (qty <= 0) removeFromCart(id, size, color);
     else setCart(prev => prev.map(i => i.id === id && i.size === size && i.color === color ? { ...i, qty } : i));
   };
-  const removeFromCart = (id, size, color) => setCart(prev => prev.filter(i => !(i.id === id && i.size === size && i.color === color)));
-  const toggleWishlist = (id) => setWishlistIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
-  const placeOrder = async (form) => {
-    const orderData = {
-      ...form,
-      items: cart,
-      total: cart.reduce((s, i) => s + i.price * i.qty, 0),
-    };
-    try { await API.post("/orders", orderData); } catch (e) { console.warn("Order save failed", e); }
+  const removeFromCart = (id, size, color) => {
+    setCart(prev => prev.filter(i => !(i.id === id && i.size === size && i.color === color)));
+  };
+
+  const toggleWishlist = (id) => {
+    setWishlistIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  };
+
+  const placeOrder = (form) => {
     setLastOrder(form);
     setCart([]);
   };
 
+  // Dynamic font injection
+  const fontMap = {
+    cormorant: "'Cormorant Garamond', serif",
+    playfair: "'Playfair Display', serif",
+    outfit: "'Outfit', sans-serif",
+  };
+  const bodyFont = fontMap[tweaks.fontPair] || fontMap.cormorant;
+
   const accent = tweaks.accentColor || "#c9a85c";
+  const storeName = tweaks.storeName || "AURAH";
   const isDark = theme === "dark";
+
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
+
   const sharedProps = { onNavigate: navigate, onAddToCart: addToCart, onToggleWishlist: toggleWishlist, wishlistIds, theme };
 
   const renderPage = () => {
@@ -207,7 +179,13 @@ function App() {
   };
 
   return (
-    <div style={{ minHeight:"100vh", fontFamily:"'Outfit', sans-serif", color: isDark ? "#f0ece4" : "#1a1714", "--accent": accent }}>
+    <div style={{
+      minHeight: "100vh",
+      fontFamily: "'Outfit', sans-serif",
+      color: isDark ? "#f0ece4" : "#1a1714",
+      "--accent": accent,
+    }}>
+      {/* CSS accent override */}
       <style>{`
         :root { --accent: ${accent}; }
         .accent { color: ${accent}; }
@@ -215,17 +193,34 @@ function App() {
         input:focus { border-color: ${accent} !important; }
       `}</style>
 
-      <Nav page={page} onNavigate={navigate} cartCount={cartCount} wishlistCount={wishlistIds.length}
+      <Nav
+        page={page} onNavigate={navigate}
+        cartCount={cartCount} wishlistCount={wishlistIds.length}
         theme={theme} onToggleTheme={() => setTheme(t => t === "dark" ? "light" : "dark")}
-        onOpenCart={() => setCartOpen(true)} />
+        onOpenCart={() => setCartOpen(true)}
+      />
 
       {renderPage()}
 
-      {!["checkout","confirmation"].includes(page) && <Footer theme={theme} onNavigate={navigate} />}
+      {/* Footer on most pages */}
+      {!["checkout","confirmation"].includes(page) && (
+        <Footer theme={theme} onNavigate={navigate} />
+      )}
 
-      {cartOpen && <CartDrawer cart={cart} onClose={() => setCartOpen(false)} onNavigate={navigate} onUpdateQty={updateQty} onRemove={removeFromCart} theme={theme} />}
-      {showPopup && page === "home" && <EmailPopup theme={theme} onDismiss={() => setShowPopup(false)} />}
+      {/* Cart Drawer */}
+      {cartOpen && (
+        <CartDrawer
+          cart={cart} onClose={() => setCartOpen(false)}
+          onNavigate={navigate} onUpdateQty={updateQty} onRemove={removeFromCart} theme={theme}
+        />
+      )}
 
+      {/* Email Popup */}
+      {showPopup && page === "home" && (
+        <EmailPopup theme={theme} onDismiss={() => setShowPopup(false)} />
+      )}
+
+      {/* Tweaks Panel */}
       <TweaksPanel tweaks={tweaks} setTweaks={setTweaks}>
         <TweakSection title="Brand">
           <TweakText id="storeName" label="Store Name" value={tweaks.storeName} onChange={v => setTweaks({ storeName: v })} />
@@ -233,25 +228,30 @@ function App() {
         </TweakSection>
         <TweakSection title="Appearance">
           <TweakRadio id="theme" label="Mode" value={theme}
-            options={[{ value:"dark", label:"Dark" }, { value:"light", label:"Light" }]}
+            options={[{ value: "dark", label: "Dark" }, { value: "light", label: "Light" }]}
             onChange={v => { setTheme(v); setTweaks({ theme: v }); }} />
           <TweakSelect id="fontPair" label="Font" value={tweaks.fontPair}
-            options={[{ value:"cormorant", label:"Cormorant (Serif)" }, { value:"outfit", label:"Outfit (Sans)" }]}
+            options={[{ value: "cormorant", label: "Cormorant (Serif)" }, { value: "outfit", label: "Outfit (Sans)" }]}
             onChange={v => setTweaks({ fontPair: v })} />
           <TweakSlider id="cardRadius" label="Card Radius" value={tweaks.cardRadius} min={0} max={16} step={2}
             onChange={v => setTweaks({ cardRadius: v })} />
         </TweakSection>
         <TweakSection title="Layout">
           <TweakRadio id="heroLayout" label="Hero Style" value={tweaks.heroLayout}
-            options={[{ value:"split", label:"Split" }, { value:"centered", label:"Centered" }]}
+            options={[{ value: "split", label: "Split" }, { value: "centered", label: "Centered" }]}
             onChange={v => setTweaks({ heroLayout: v })} />
+          <TweakRadio id="animSpeed" label="Animations" value={tweaks.animSpeed}
+            options={[{ value: "fast", label: "Fast" }, { value: "medium", label: "Medium" }, { value: "slow", label: "Slow" }]}
+            onChange={v => setTweaks({ animSpeed: v })} />
         </TweakSection>
         <TweakSection title="Navigation">
           <TweakButton label="→ Home" onClick={() => navigate("home")} />
           <TweakButton label="→ Collection" onClick={() => navigate("collection")} />
-          <TweakButton label="→ Product" onClick={() => navigate("product", { productId: 1 })} />
+          <TweakButton label="→ Product Detail" onClick={() => navigate("product", { productId: 1 })} />
           <TweakButton label="→ Cart" onClick={() => navigate("cart")} />
-          <TweakButton label="→ Admin Panel" onClick={() => { window.location.href = "/admin"; }} />
+          <TweakButton label="→ Checkout" onClick={() => navigate("checkout")} />
+          <TweakButton label="→ Confirmation" onClick={() => navigate("confirmation")} />
+          <TweakButton label="→ Wishlist" onClick={() => navigate("wishlist")} />
         </TweakSection>
       </TweaksPanel>
     </div>
