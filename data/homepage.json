@@ -1,0 +1,44 @@
+{
+  "hero": {
+    "badge": "Spring Collection 2026",
+    "headline": "Dressed in Intention.",
+    "subtext": "Premium fashion, beauty, and home essentials — designed for those who choose quality over quantity.",
+    "ctaText": "Shop Collection",
+    "ctaSecondary": "Explore Lookbook"
+  },
+  "marquee": [
+    "Free Shipping on $150+",
+    "·",
+    "New Arrivals Weekly",
+    "·",
+    "30-Day Returns",
+    "·",
+    "Sustainably Sourced",
+    "·",
+    "Handcrafted Quality",
+    "·"
+  ],
+  "testimonials": [
+    {
+      "quote": "The wrap coat has completely redefined my wardrobe. I wear it every day.",
+      "author": "Margaux D.",
+      "role": "Fashion Editor, Paris",
+      "rating": 5,
+      "product": "Atelier Wrap Coat"
+    },
+    {
+      "quote": "The face oil is the only product I've repurchased more than three times.",
+      "author": "Charlotte H.",
+      "role": "Creative Director, London",
+      "rating": 5,
+      "product": "Radiance Face Oil"
+    },
+    {
+      "quote": "Everything about these candles is considered — the vessels, the scent, the burn.",
+      "author": "Elena V.",
+      "role": "Interior Stylist, Milan",
+      "rating": 5,
+      "product": "Noir Candle Trio"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "id": "fashion",
+    "label": "Fashion",
+    "count": 6
+  },
+  {
+    "id": "beauty",
+    "label": "Beauty",
+    "count": 5
+  },
+  {
+    "id": "home",
+    "label": "Home",
+    "count": 5
+  }
+]

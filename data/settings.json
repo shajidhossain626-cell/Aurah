@@ -1,0 +1,15 @@
+{
+  "storeName": "AURAH",
+  "tagline": "Curated for the discerning few.",
+  "accentColor": "#c9a85c",
+  "theme": "dark",
+  "fontPair": "cormorant",
+  "heroLayout": "split",
+  "cardRadius": 0,
+  "email": "hello@aurahstudio.co",
+  "instagram": "@aurahstudio",
+  "currency": "USD",
+  "currencySymbol": "$",
+  "freeShippingThreshold": 150,
+  "shippingCost": 18
+}
