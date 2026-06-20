@@ -1,272 +1,106 @@
-# AURAH Store — Deployment & Admin Guide
+# AURAH Store — Setup Guide
 
-A complete premium e-commerce store with a full admin panel. Built with React (frontend) + Node.js/Express (backend).
+## 🔑 Quick Access
 
----
-
-## 🔑 Admin Panel Access
-
-| | URL | Credential |
+| | URL | Token |
 |---|---|---|
-| **Live Store** | `https://your-vercel-url.vercel.app` | — |
-| **Admin Panel** | `https://your-vercel-url.vercel.app/admin` | Token: `202553` (or whatever you set as `ADMIN_TOKEN`) |
-| **Local Store** | `http://localhost:3001` | — |
-| **Local Admin** | `http://localhost:3001/admin` | Token from `.env` |
-
-> ⚠️ **Change your token!** Set `ADMIN_TOKEN` in Vercel → Settings → Environment Variables.
-
-### What you can do in the Admin Panel:
-- **Dashboard** — Revenue, orders, and featured products at a glance
-- **Products** — Add, edit, delete products. Set name, price, description, sizes, colors, badge, featured status, upload images
-- **Categories** — Add / rename / delete product categories
-- **Orders** — View all orders, filter by status, update order status (pending → processing → shipped → delivered)
-- **Homepage** — Edit hero headline, badge, subtext, CTA buttons, marquee text, testimonials
-- **Settings** — Store name, accent color, theme, font, shipping rates, currency
+| **Store** | `your-site.vercel.app` | — |
+| **Admin Panel** | `your-site.vercel.app/admin` | `202553` |
 
 ---
 
+## ⚠️ IMPORTANT — Read This First
+
+Your admin panel changes (products, orders, settings) need a place to be **saved**. There are two modes:
+
+### Mode 1: Temporary Storage (default, no setup)
+Works immediately but **resets every ~30 minutes of inactivity** (Vercel cold starts wipe it). Good for testing only.
+
+### Mode 2: Persistent Storage (recommended — 2 minute setup)
+Your changes save **permanently**. Do this once:
+
+1. Go to your **Vercel Dashboard** → your project
+2. Click the **Storage** tab
+3. Click **Create Database** → choose **KV** (powered by Redis)
+4. Give it a name, click **Create**
+5. Click **Connect to Project** → select this project → **Connect**
+6. Vercel automatically adds `KV_REST_API_URL` and `KV_REST_API_TOKEN` env variables
+7. Go to **Deployments** → redeploy your latest deployment
+
+That's it. Open `/admin` — the top bar will show a **green "✓ Persistent" badge** once it's working.
+
+---
 
 ## 📁 Project Structure
 
 ```
-aurah-store/
+aurah/
 ├── api/
-│   ├── server.js          ← Express backend (all API routes)
-│   └── seed-products.js   ← Initial product data
-├── data/                  ← JSON "database" (auto-created on first run)
-│   ├── products.json
-│   ├── categories.json
-│   ├── orders.json
-│   ├── settings.json
-│   └── homepage.json
+│   ├── server.js          ← Express backend (KV + file storage)
+│   └── seed-products.js   ← Initial product catalog
+├── data/                   ← Seed JSON files (used only as fallback)
 ├── public/
-│   ├── index.html         ← Main storefront
-│   ├── admin/
-│   │   └── index.html     ← Admin panel (yoursite.com/admin)
-│   ├── js/                ← Store React modules
-│   │   ├── store-data.jsx
-│   │   ├── components.jsx
-│   │   ├── home-page.jsx
-│   │   ├── shop-pages.jsx
-│   │   ├── cart-checkout.jsx
-│   │   └── tweaks-panel.jsx
-│   └── uploads/           ← Uploaded product images
-├── .env.example
-├── .gitignore
-├── package.json
-└── vercel.json            ← Vercel deployment config
+│   ├── index.html          ← Storefront
+│   ├── admin/index.html    ← Admin panel
+│   ├── js/                 ← React store modules
+│   └── uploads/
+├── vercel.json
+└── package.json
 ```
 
 ---
 
-## 🚀 Deploying to GitHub + Vercel (Free)
-
-### Step 1 — Create a GitHub Repository
-
-1. Go to **github.com** → click **"New repository"**
-2. Name it `aurah-store` (or anything you like)
-3. Set it to **Public** or **Private** (both work with Vercel)
-4. Click **"Create repository"**
-
-### Step 2 — Push Your Code
-
-Open a terminal in the `aurah-store` folder and run:
+## 🚀 Deploy Steps
 
 ```bash
-git init
 git add .
-git commit -m "Initial commit — AURAH store"
-git remote add origin https://github.com/YOUR_USERNAME/aurah-store.git
-git branch -M main
-git push -u origin main
+git commit -m "update store"
+git push
 ```
 
-> Replace `YOUR_USERNAME` with your actual GitHub username.
+In Vercel → Settings → Environment Variables, make sure you have:
 
-### Step 3 — Deploy to Vercel
+| Key | Value |
+|---|---|
+| `ADMIN_TOKEN` | `202553` (or your own secret) |
 
-1. Go to **vercel.com** → sign up / log in with your GitHub account
-2. Click **"Add New Project"**
-3. Click **"Import"** next to your `aurah-store` repository
-4. On the configuration screen:
-   - **Framework Preset:** `Other`
-   - **Root Directory:** leave as `/`
-   - **Build Command:** leave empty
-   - **Output Directory:** leave empty
-5. Click **"Environment Variables"** and add:
-   ```
-   Name:  ADMIN_TOKEN
-   Value: your-strong-secret-password-here
-   ```
-   ⚠️ Change this from the default! Anyone with this token can edit your store.
-6. Click **"Deploy"**
+(KV variables are auto-added when you connect a KV database — see above.)
 
-Your store will be live at `https://aurah-store.vercel.app` (or similar).
-
-### Step 4 — Access the Admin Panel
-
-Visit: `https://your-site.vercel.app/admin`
-
-Enter the `ADMIN_TOKEN` you set in Step 3.
+Then: Vercel → Deployments → latest → **⋯** → **Redeploy**
 
 ---
 
-## 💻 Running Locally (Development)
+## 💻 Local Development
 
 ```bash
-# Install dependencies
 npm install
-
-# Copy environment file
-cp .env.example .env
-
-# Edit .env and set your token
-# ADMIN_TOKEN=your-secret-here
-
-# Start the server
 npm start
-# or for auto-restart on changes:
-npm install -g nodemon
-nodemon api/server.js
 ```
+- Store: http://localhost:3001
+- Admin: http://localhost:3001/admin (token: `202553`)
 
-Then open:
-- **Store:** http://localhost:3001
-- **Admin:** http://localhost:3001/admin
+Locally, data is always saved to `data/*.json` files directly — no KV needed for local testing.
 
 ---
 
 ## 🛠️ Admin Panel Features
 
-### Dashboard
-- Revenue, order count, average order value stats
-- Recent orders overview
-- Featured products summary
-
-### Products (`/admin` → Products tab)
-- **Add** new products with full details
-- **Edit** name, subtitle, price, description, badge, category
-- **Set sizes** (e.g. XS, S, M, L or 30ml, One Size)
-- **Set colors** with color picker
-- **Add product details** (materials, care instructions)
-- **Upload images** (up to 5MB each)
-- **Toggle featured** status (shows on homepage)
-- **Delete** products
-
-### Categories (`/admin` → Categories tab)
-- **Add** new categories
-- **Edit** category names
-- **Delete** categories
-- See product count per category
-
-### Orders (`/admin` → Orders tab)
-- View all orders with customer details, items, totals
-- **Filter** by status (pending, processing, shipped, delivered, cancelled)
-- **Update order status** inline
-- Click 👁 to view full order detail with all items
-
-### Homepage Editor (`/admin` → Homepage tab)
-- Edit **hero section**: badge text, headline, subtext, CTA buttons
-- Edit **marquee banner** items
-- Add/edit/remove **testimonials**
-
-### Settings (`/admin` → Settings tab)
-- **Store name** and tagline
-- **Contact email** and Instagram handle
-- **Accent color** (live color picker)
-- **Default theme** (dark/light)
-- **Font pairing** (Cormorant serif / Outfit sans)
-- **Hero layout** (split / centered)
-- **Card border radius**
-- **Currency symbol**
-- **Free shipping threshold**
-- **Shipping cost**
-
----
-
-## 🔒 Security
-
-### Changing Your Admin Token
-
-**Locally:** Edit `.env`:
-```
-ADMIN_TOKEN=my-new-secret-token-123
-```
-
-**On Vercel:**
-1. Go to your project in Vercel dashboard
-2. **Settings → Environment Variables**
-3. Edit `ADMIN_TOKEN`
-4. **Redeploy** the project
-
-### Important Notes
-- The default token (`aurah-admin-secret-2026`) is public — **change it before going live**
-- Your token is stored in the browser's localStorage — log out when done on shared computers
-- For production, consider adding HTTPS-only and rate limiting to the API
-
----
-
-## 📦 Adding Real Product Images
-
-Instead of the SVG placeholder images, you can:
-
-**Option A — Upload via admin panel:**
-1. Go to Admin → Products → Edit a product
-2. Use the image upload area
-3. The uploaded URL is added to the "Image Keys" field automatically
-
-**Option B — Use external image URLs:**
-In the "Image Keys" field, enter full URLs:
-```
-https://your-cdn.com/coat-photo.jpg, https://your-cdn.com/coat-detail.jpg
-```
-
-Then in `public/js/store-data.jsx`, the `ProductImage` component will fall back to these URLs.
-
----
-
-## 🔄 Data Persistence Note
-
-Vercel's serverless functions have an **ephemeral filesystem** — data stored in `data/*.json` files will reset on redeploy or after inactivity.
-
-For persistent data in production, upgrade to one of:
-- **Vercel KV** (Redis — free tier available)
-- **PlanetScale** (MySQL — free tier)
-- **Supabase** (PostgreSQL — free tier)
-- **MongoDB Atlas** (free tier)
-
-The `api/server.js` file is structured to make this swap easy — all data access is through the `readJSON`/`writeJSON` helpers at the top.
-
----
-
-## ✏️ Editing Files Directly
-
-| What to change | File to edit |
-|---|---|
-| Product catalog (initial data) | `api/seed-products.js` |
-| Store layout / components | `public/js/components.jsx` |
-| Homepage sections | `public/js/home-page.jsx` |
-| Collection / product pages | `public/js/shop-pages.jsx` |
-| Cart / checkout flow | `public/js/cart-checkout.jsx` |
-| Store-wide settings defaults | `public/index.html` (TWEAK_DEFAULTS) |
-| API routes | `api/server.js` |
-| Deployment config | `vercel.json` |
+- **Dashboard** — revenue, profit, recent orders
+- **Revenue & Profit** — cost price vs sell price margin analysis, monthly charts
+- **Products** — add/edit/delete, image upload, sizes, colors, cost & sell price
+- **Categories** — add/edit/delete collections
+- **Orders** — view, filter by status, update status, see profit per order
+- **Homepage Editor** — hero text, marquee, testimonials
+- **Settings** — store name, colors, theme, shipping — plus the storage status indicator
 
 ---
 
 ## 🆘 Troubleshooting
 
-**"Unauthorized" error in admin:**
-→ Check your `ADMIN_TOKEN` env variable in Vercel matches what you're entering
+**"Invalid token"** → Check `ADMIN_TOKEN` in Vercel matches what you type in `/admin`
 
-**Data resets after redeploy:**
-→ Expected on Vercel's free tier — see "Data Persistence Note" above
+**Changes disappear after a while** → You're on Temporary Storage. Follow the KV setup above.
 
-**Images not showing after upload:**
-→ Same as above — uploaded files don't persist on Vercel. Use a CDN or cloud storage.
+**500 error / function crashed** → Check Vercel → your project → Logs for the exact error message
 
-**Store not loading:**
-→ Check browser console. Usually a CORS issue or the API server isn't running locally.
-
-**Changes not showing on live site:**
-→ Push to GitHub — Vercel auto-deploys on every push to `main`.
+**Admin panel shows blank page** → Hard refresh (Ctrl+Shift+R), check browser console for errors

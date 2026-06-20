@@ -2,21 +2,19 @@
   "hero": {
     "badge": "Spring Collection 2026",
     "headline": "Dressed in Intention.",
-    "subtext": "Premium fashion, beauty, and home essentials — designed for those who choose quality over quantity.",
+    "subtext": "Premium fashion, beauty, and home essentials \u2014 designed for those who choose quality over quantity.",
     "ctaText": "Shop Collection",
     "ctaSecondary": "Explore Lookbook"
   },
   "marquee": [
     "Free Shipping on $150+",
-    "·",
+    "\u00b7",
     "New Arrivals Weekly",
-    "·",
+    "\u00b7",
     "30-Day Returns",
-    "·",
+    "\u00b7",
     "Sustainably Sourced",
-    "·",
-    "Handcrafted Quality",
-    "·"
+    "\u00b7"
   ],
   "testimonials": [
     {
@@ -27,14 +25,14 @@
       "product": "Atelier Wrap Coat"
     },
     {
-      "quote": "The face oil is the only product I've repurchased more than three times.",
+      "quote": "The face oil is the only product I have repurchased more than three times.",
       "author": "Charlotte H.",
       "role": "Creative Director, London",
       "rating": 5,
       "product": "Radiance Face Oil"
     },
     {
-      "quote": "Everything about these candles is considered — the vessels, the scent, the burn.",
+      "quote": "Everything about these candles is considered \u2014 the vessels, the scent, the burn.",
       "author": "Elena V.",
       "role": "Interior Stylist, Milan",
       "rating": 5,

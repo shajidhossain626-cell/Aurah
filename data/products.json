@@ -5,6 +5,7 @@
     "name": "Atelier Wrap Coat",
     "subtitle": "Camel / Cashmere Blend",
     "price": 890,
+    "costPrice": 320,
     "originalPrice": 1100,
     "badge": "Bestseller",
     "sizes": [
@@ -36,9 +37,7 @@
       "True to size"
     ],
     "images": [
-      "coat",
-      "coat-detail",
-      "coat-model"
+      "coat"
     ],
     "rating": 4.9,
     "reviews": 247,
@@ -50,6 +49,7 @@
     "name": "Soie Slip Dress",
     "subtitle": "Champagne / Pure Silk",
     "price": 420,
+    "costPrice": 140,
     "badge": "New",
     "sizes": [
       "XS",
@@ -71,7 +71,7 @@
         "hex": "#d4a0a0"
       }
     ],
-    "description": "Pure silk charmeuse falls effortlessly against the body. A bias cut silhouette that moves with intention — equally at home on an evening terrace or a gallery opening.",
+    "description": "Pure silk charmeuse falls effortlessly against the body. A bias cut silhouette that moves with intention.",
     "details": [
       "100% Pure Silk",
       "Hand wash cold",
@@ -79,8 +79,7 @@
       "Bias cut — size up"
     ],
     "images": [
-      "dress",
-      "dress-detail"
+      "dress"
     ],
     "rating": 4.8,
     "reviews": 183,
@@ -92,6 +91,7 @@
     "name": "Maison Leather Tote",
     "subtitle": "Pebbled Full-Grain Leather",
     "price": 650,
+    "costPrice": 210,
     "badge": null,
     "sizes": [
       "One Size"
@@ -110,16 +110,15 @@
         "hex": "#f5f0e8"
       }
     ],
-    "description": "Full-grain Italian leather, naturally pebbled and rich with character. A structured tote sized for the modern life — laptop, notebook, and essentials, beautifully contained.",
+    "description": "Full-grain Italian leather, naturally pebbled and rich with character.",
     "details": [
       "Full-grain Italian leather",
       "Suede interior",
       "Solid brass hardware",
-      "30cm × 36cm × 14cm"
+      "30cm x 36cm x 14cm"
     ],
     "images": [
-      "tote",
-      "tote-detail"
+      "tote"
     ],
     "rating": 4.9,
     "reviews": 312,
@@ -131,6 +130,7 @@
     "name": "Rib-Knit Bodysuit",
     "subtitle": "Merino Wool / Cream",
     "price": 195,
+    "costPrice": 65,
     "badge": null,
     "sizes": [
       "XS",
@@ -153,7 +153,7 @@
         "hex": "#8a9e8a"
       }
     ],
-    "description": "Extra-fine merino wool in a close rib knit. Effortlessly layered under tailoring or worn alone — a foundation piece elevated to art.",
+    "description": "Extra-fine merino wool in a close rib knit.",
     "details": [
       "100% Merino Wool",
       "Machine wash gentle",
@@ -173,6 +173,7 @@
     "name": "Wide-Leg Trousers",
     "subtitle": "Linen Blend / Oat",
     "price": 310,
+    "costPrice": 95,
     "badge": "Low Stock",
     "sizes": [
       "XS",
@@ -194,7 +195,7 @@
         "hex": "#b5866e"
       }
     ],
-    "description": "A wide, commanding silhouette in breathable linen-cotton blend. High-waisted, with a gentle drape — the trouser that anchors any wardrobe.",
+    "description": "A wide, commanding silhouette in breathable linen-cotton blend.",
     "details": [
       "70% Linen, 30% Cotton",
       "Hand wash cold",
@@ -214,6 +215,7 @@
     "name": "Structured Blazer",
     "subtitle": "Wool Gabardine / Ivory",
     "price": 580,
+    "costPrice": 195,
     "badge": null,
     "sizes": [
       "XS",
@@ -236,7 +238,7 @@
         "hex": "#c9a880"
       }
     ],
-    "description": "Italian wool gabardine, precisely tailored. Strong shoulders, a suppressed waist, and clean lapels — authority worn elegantly.",
+    "description": "Italian wool gabardine, precisely tailored.",
     "details": [
       "100% Wool Gabardine",
       "Dry clean only",
@@ -256,13 +258,14 @@
     "name": "Radiance Face Oil",
     "subtitle": "Squalane + 24K Gold Peptides",
     "price": 145,
+    "costPrice": 38,
     "badge": "Editor's Pick",
     "sizes": [
       "30ml",
       "50ml"
     ],
     "colors": [],
-    "description": "A luminous elixir of squalane, rosehip, and 24K gold peptides. Twelve actives work overnight to restore density, glow, and a sense of calm to your complexion.",
+    "description": "A luminous elixir of squalane, rosehip, and 24K gold peptides.",
     "details": [
       "Squalane + Rosehip base",
       "24K Gold Peptides",
@@ -282,6 +285,7 @@
     "name": "Velvet Lip Serum",
     "subtitle": "Plumping + Hydrating",
     "price": 58,
+    "costPrice": 16,
     "badge": "New",
     "sizes": [
       "3.5g"
@@ -296,7 +300,7 @@
         "hex": "#8b3a52"
       },
       {
-        "name": "Rosé",
+        "name": "Rose",
         "hex": "#d4a0a0"
       },
       {
@@ -304,7 +308,7 @@
         "hex": "#d4aa8e"
       }
     ],
-    "description": "A triple-action lip serum with hyaluronic acid, peptide complex, and sheer pigment. Plumps, nourishes, and subtly tints — in a single gesture.",
+    "description": "A triple-action lip serum with hyaluronic acid, peptide complex, and sheer pigment.",
     "details": [
       "Hyaluronic Acid",
       "Peptide Complex",
@@ -321,15 +325,16 @@
   {
     "id": 9,
     "collection": "beauty",
-    "name": "Lumière Eye Cream",
+    "name": "Lumiere Eye Cream",
     "subtitle": "Retinol + Caffeine Complex",
     "price": 98,
+    "costPrice": 28,
     "badge": null,
     "sizes": [
       "15ml"
     ],
     "colors": [],
-    "description": "A concentrated eye treatment with encapsulated retinol, caffeine, and vitamin K. Addresses dark circles, fine lines, and puffiness with clinical precision.",
+    "description": "A concentrated eye treatment with encapsulated retinol, caffeine, and vitamin K.",
     "details": [
       "Encapsulated Retinol 0.1%",
       "Caffeine + Vitamin K",
@@ -349,6 +354,7 @@
     "name": "Silk Cloud Powder",
     "subtitle": "Translucent Setting Powder",
     "price": 72,
+    "costPrice": 19,
     "badge": null,
     "sizes": [
       "10g"
@@ -367,7 +373,7 @@
         "hex": "#d4aa80"
       }
     ],
-    "description": "Finely-milled talc-free powder with light-diffusing pearls. Sets, blurs, and perfects without masking skin's natural luminosity.",
+    "description": "Finely-milled talc-free powder with light-diffusing pearls.",
     "details": [
       "Talc-free formula",
       "Light-diffusing pearls",
@@ -387,13 +393,14 @@
     "name": "Ritual Body Oil",
     "subtitle": "Neroli + Jojoba Blend",
     "price": 88,
+    "costPrice": 24,
     "badge": "Bestseller",
     "sizes": [
       "100ml",
       "200ml"
     ],
     "colors": [],
-    "description": "An enveloping body oil of neroli, jojoba, and sweet almond. Deeply hydrating, fast-absorbing, and intoxicatingly scented — a daily ritual elevated.",
+    "description": "An enveloping body oil of neroli, jojoba, and sweet almond.",
     "details": [
       "Neroli + Bergamot scent",
       "Jojoba + Sweet Almond",
@@ -413,10 +420,11 @@
     "name": "Linen Throw Blanket",
     "subtitle": "Stonewashed Belgian Linen",
     "price": 195,
+    "costPrice": 58,
     "badge": null,
     "sizes": [
-      "130×180cm",
-      "160×220cm"
+      "130x180cm",
+      "160x220cm"
     ],
     "colors": [
       {
@@ -432,7 +440,7 @@
         "hex": "#c4785a"
       }
     ],
-    "description": "Stonewashed Belgian linen, pre-washed for instant softness. A generous throw that softens with every use — draped on a sofa or wrapped around you.",
+    "description": "Stonewashed Belgian linen, pre-washed for instant softness.",
     "details": [
       "100% Belgian Linen",
       "Machine washable",
@@ -452,12 +460,13 @@
     "name": "Noir Candle Trio",
     "subtitle": "Concrete Vessels / 3 Scents",
     "price": 210,
+    "costPrice": 65,
     "badge": "Gift Ready",
     "sizes": [
       "Set of 3"
     ],
     "colors": [],
-    "description": "Three sculptural concrete vessels, each holding a distinct mood: Oud & Amber, White Tea, and Hinoki Forest. 60 hours of burn per candle.",
+    "description": "Three sculptural concrete vessels, each holding a distinct mood: Oud & Amber, White Tea, and Hinoki Forest.",
     "details": [
       "Soy wax blend",
       "Concrete vessels",
@@ -477,6 +486,7 @@
     "name": "Matte Ceramic Vase",
     "subtitle": "Hand-thrown / Matte Glaze",
     "price": 145,
+    "costPrice": 42,
     "badge": null,
     "sizes": [
       "Small",
@@ -497,7 +507,7 @@
         "hex": "#2a2a2a"
       }
     ],
-    "description": "Hand-thrown on a wheel, each piece subtly unique. A matte glaze in three tonalities — quiet objects that hold presence without noise.",
+    "description": "Hand-thrown on a wheel, each piece subtly unique.",
     "details": [
       "Hand-thrown stoneware",
       "Matte glaze finish",
@@ -515,11 +525,12 @@
     "id": 15,
     "collection": "home",
     "name": "Merino Cushion Cover",
-    "subtitle": "50×50cm / Extra-Fine Merino",
+    "subtitle": "50x50cm / Extra-Fine Merino",
     "price": 120,
+    "costPrice": 36,
     "badge": null,
     "sizes": [
-      "50×50cm"
+      "50x50cm"
     ],
     "colors": [
       {
@@ -535,7 +546,7 @@
         "hex": "#3a3a3a"
       }
     ],
-    "description": "Extra-fine merino in a generous gauge knit. Covered buttons at the back, supremely soft to the touch, and structured enough to hold its shape beautifully.",
+    "description": "Extra-fine merino in a generous gauge knit.",
     "details": [
       "100% Merino Wool",
       "Dry clean only",
@@ -555,13 +566,14 @@
     "name": "Walnut Serving Board",
     "subtitle": "Solid Black Walnut",
     "price": 165,
+    "costPrice": 52,
     "badge": "Handcrafted",
     "sizes": [
-      "35×20cm",
-      "50×28cm"
+      "35x20cm",
+      "50x28cm"
     ],
     "colors": [],
-    "description": "Milled from a single plank of American black walnut. A serving board of uncommon grain and warmth — equally stunning on the table or hanging on a wall.",
+    "description": "Milled from a single plank of American black walnut.",
     "details": [
       "Solid Black Walnut",
       "Food-safe oil finish",

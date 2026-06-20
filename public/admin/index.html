@@ -3,1418 +3,332 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AURAH Admin</title>
+<title>AURAH — Manage Store</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#07060a;--bg2:#0d0c12;--sf:#13111a;--sf2:#1a1825;--sf3:#211e2e;
-  --bd:rgba(255,255,255,.06);--bd2:rgba(255,255,255,.11);--bd3:rgba(255,255,255,.18);
-  --gold:#c9a85c;--gold2:#e8c87a;--gold3:#a8883c;--gbg:rgba(201,168,92,.1);--gbg2:rgba(201,168,92,.18);
-  --tx:#ede9e0;--tx2:rgba(237,233,224,.6);--tx3:rgba(237,233,224,.3);--tx4:rgba(237,233,224,.15);
-  --green:#4ebd76;--grbg:rgba(78,189,118,.1);--green2:#3da062;
-  --red:#cc5555;--rdbg:rgba(204,85,85,.1);
-  --blue:#5599cc;--blbg:rgba(85,153,204,.1);
-  --purple:#9966cc;--prbg:rgba(153,102,204,.1);
-  --sb:248px;
-  --rad:6px;
-  --shadow:0 4px 24px rgba(0,0,0,.5);
-}
-html,body{height:100%;overflow:hidden}
-body{font-family:Outfit,sans-serif;background:var(--bg);color:var(--tx);font-size:14px;line-height:1.5;display:flex}
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(201,168,92,.15);border-radius:4px}
-::-webkit-scrollbar-thumb:hover{background:rgba(201,168,92,.3)}
-input,select,textarea,button{font-family:inherit;font-size:14px}
-
-/* ── SIDEBAR ── */
-.sidebar{width:var(--sb);min-width:var(--sb);background:var(--bg2);border-right:1px solid var(--bd);display:flex;flex-direction:column;height:100vh;position:fixed;left:0;top:0;z-index:200;transition:transform .25s}
-.sb-logo{padding:22px 20px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:12px}
-.sb-logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--gold3),var(--gold2));border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#07060a;letter-spacing:.08em;flex-shrink:0}
-.sb-logo-info{flex:1}
-.sb-logo-name{font-size:16px;letter-spacing:.22em;color:var(--tx);font-weight:700;line-height:1}
-.sb-logo-tag{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx3);margin-top:2px}
-.sb-nav{flex:1;padding:10px 0;overflow-y:auto}
-.sb-section{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx4);font-weight:600;padding:14px 18px 6px}
-.sb-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;color:var(--tx2);font-size:13px;font-weight:400;transition:all .12s;position:relative;border:none;background:none;width:100%;text-align:left}
-.sb-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:transparent;transition:background .12s}
-.sb-item:hover{color:var(--tx);background:rgba(255,255,255,.025)}
-.sb-item.on{color:var(--gold);background:var(--gbg);font-weight:500}
-.sb-item.on::before{background:var(--gold)}
-.sb-item svg{width:15px;height:15px;flex-shrink:0;stroke-width:1.7;opacity:.7}
-.sb-item.on svg{opacity:1}
-.sb-badge{margin-left:auto;background:var(--gold);color:#07060a;border-radius:999px;padding:1px 7px;font-size:9px;font-weight:700;letter-spacing:.04em}
-.sb-badge.red{background:var(--red);color:#fff}
-.sb-foot{padding:14px 16px;border-top:1px solid var(--bd);display:flex;flex-direction:column;gap:8px}
-.sb-live{display:flex;align-items:center;justify-content:center;gap:7px;padding:9px;border:1px solid rgba(201,168,92,.25);color:var(--gold);font-size:11px;letter-spacing:.09em;text-transform:uppercase;cursor:pointer;background:transparent;width:100%;transition:all .2s;border-radius:var(--rad);font-weight:600}
-.sb-live:hover{background:var(--gbg);border-color:rgba(201,168,92,.5)}
-.sb-out{background:none;border:1px solid var(--bd);color:var(--tx3);font-size:11px;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;padding:8px;width:100%;transition:all .2s;border-radius:var(--rad);font-weight:500}
-.sb-out:hover{color:var(--red);border-color:rgba(204,85,85,.35)}
-.sb-version{font-size:10px;color:var(--tx4);text-align:center;letter-spacing:.04em}
-
-/* ── MAIN AREA ── */
-.main{margin-left:var(--sb);flex:1;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-.topbar{background:var(--bg2);border-bottom:1px solid var(--bd);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.tb-left{display:flex;align-items:center;gap:12px}
-.tb-title{font-size:15px;font-weight:600;letter-spacing:-.01em}
-.tb-crumb{font-size:11px;color:var(--tx3)}
-.tb-right{display:flex;align-items:center;gap:16px;font-size:11px;color:var(--tx3)}
-.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:5px;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.content{flex:1;overflow-y:auto;padding:24px}
-
-/* ── STATS ── */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
-.stat{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rad);padding:18px 20px;position:relative;overflow:hidden;cursor:default;transition:border-color .15s}
-.stat:hover{border-color:var(--bd2)}
-.stat-accent{position:absolute;top:0;left:0;right:0;height:2px}
-.stat-ico{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:15px;flex-shrink:0}
-.stat-lbl{font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);font-weight:600;margin-bottom:5px}
-.stat-num{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:4px}
-.stat-sub{font-size:11px;color:var(--tx3)}
-.g-ico{background:var(--gbg)}.gr-ico{background:var(--grbg)}.r-ico{background:var(--rdbg)}.b-ico{background:var(--blbg)}.p-ico{background:var(--prbg)}
-
-/* ── CARDS ── */
-.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rad);padding:20px}
-.csm{background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rad)}
-.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.ct{font-size:13px;font-weight:600;letter-spacing:-.01em}
-.cs{font-size:11px;color:var(--tx3);margin-top:2px}
-.csec{font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--bd)}
-
-/* ── TABLE ── */
-.tw{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;padding:10px 14px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);font-weight:600;border-bottom:1px solid var(--bd);white-space:nowrap;background:var(--bg2)}
-th:first-child{border-radius:var(--rad) 0 0 0}
-th:last-child{border-radius:0 var(--rad) 0 0}
-td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.025);vertical-align:middle}
-tr:last-child td{border-bottom:none}
-tr.cr{cursor:pointer}
-tr.cr:hover td{background:rgba(255,255,255,.018)}
-
-/* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 18px;font-size:11px;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;border:none;transition:all .15s;font-weight:600;border-radius:var(--rad);white-space:nowrap}
-.btn-g{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#07060a}.btn-g:hover{background:linear-gradient(135deg,var(--gold),var(--gold2));transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,92,.25)}
-.btn-o{background:transparent;border:1px solid var(--bd2);color:var(--tx)}.btn-o:hover{border-color:var(--gold);color:var(--gold)}
-.btn-d{background:transparent;border:1px solid rgba(204,85,85,.25);color:var(--red)}.btn-d:hover{background:var(--rdbg)}
-.btn-blue{background:var(--blbg);border:1px solid rgba(85,153,204,.3);color:var(--blue)}.btn-blue:hover{background:rgba(85,153,204,.2)}
-.btn-sm{padding:6px 13px;font-size:10px}
-.btn-xs{padding:4px 10px;font-size:9px}
-.bi{background:transparent;border:1px solid var(--bd);color:var(--tx2);padding:6px 9px;cursor:pointer;transition:all .15s;border-radius:4px;display:inline-flex;align-items:center;gap:4px;font-size:12px}
-.bi:hover{border-color:var(--gold);color:var(--gold)}
-.bi-r{border-color:rgba(204,85,85,.2);color:var(--red)}.bi-r:hover{background:var(--rdbg);border-color:rgba(204,85,85,.4)}
-.bi-g{border-color:rgba(78,189,118,.2);color:var(--green)}.bi-g:hover{background:var(--grbg)}
-
-/* ── FORM ── */
-.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
-.fg.nm{margin-bottom:0}
-.fg label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3);font-weight:500}
-.fg input,.fg select,.fg textarea{background:var(--sf2);border:1px solid var(--bd);color:var(--tx);padding:10px 13px;outline:none;width:100%;transition:all .15s;border-radius:4px}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:rgba(201,168,92,.4);background:var(--sf3)}
-.fg textarea{resize:vertical;min-height:80px}
-.fg select option{background:#13111a}
-.fg input[type=color]{padding:3px;height:38px;cursor:pointer}
-.fg input[type=range]{padding:0;height:auto;background:transparent;border:none;accent-color:var(--gold)}
-.f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.f3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
-.f4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px}
-.fhint{font-size:10px;color:var(--tx3);margin-top:3px}
-.fhint.ok{color:var(--green)}.fhint.warn{color:var(--gold)}.fhint.bad{color:var(--red)}
-
-/* ── TAGS ── */
-.tags{display:flex;flex-wrap:wrap;gap:6px;min-height:28px;margin-bottom:8px}
-.tag{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:var(--sf2);border:1px solid var(--bd);font-size:11px;border-radius:4px;color:var(--tx2)}
-.tdel{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:14px;line-height:1;padding:0 1px;transition:color .12s}
-.tdel:hover{color:var(--red)}
-.ar{display:flex;gap:7px;align-items:center}
-.ar input{flex:1}
-
-/* ── IMAGE GRID ── */
-.ig{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
-.ic{position:relative;aspect-ratio:3/4;border-radius:5px;overflow:hidden;background:var(--sf2);border:1px solid var(--bd);transition:border-color .15s}
-.ic:hover{border-color:var(--bd3)}
-.ic img{width:100%;height:100%;object-fit:cover}
-.ic .main-badge{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(135deg,var(--gold3),var(--gold));color:#07060a;font-size:7px;letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:3px;font-weight:800}
-.ic .rm{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.8);border:none;color:#fff;width:20px;height:20px;border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .15s;padding:0}
-.ic:hover .rm{opacity:1}
-.iph{display:flex;align-items:center;justify-content:center;height:100%;font-size:9px;color:var(--tx3);padding:8px;text-align:center;word-break:break-all;flex-direction:column;gap:4px}
-.iup{aspect-ratio:3/4;border:2px dashed var(--bd2);border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;transition:all .2s;gap:6px}
-.iup:hover,.iup.drag{border-color:var(--gold);background:var(--gbg)}
-.iup input{position:absolute;inset:0;opacity:0;cursor:pointer}
-.iup svg{width:20px;height:20px;color:var(--tx3)}
-.iup span{font-size:9px;color:var(--tx3);text-align:center;line-height:1.5}
-.iup .up-spinner{display:none;width:16px;height:16px;border:2px solid var(--bd2);border-top-color:var(--gold);border-radius:50%;animation:spin .6s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.img-count{font-size:10px;color:var(--tx3);margin-top:-4px;margin-bottom:10px}
-
-/* ── MODAL ── */
-.mbg{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(10px);z-index:500;display:flex;align-items:center;justify-content:center;padding:16px;animation:bgIn .15s ease}
-@keyframes bgIn{from{opacity:0}to{opacity:1}}
-.modal{background:var(--sf);border:1px solid var(--bd2);border-radius:10px;width:100%;max-width:800px;max-height:94vh;display:flex;flex-direction:column;box-shadow:0 40px 120px rgba(0,0,0,.8);animation:mIn .15s ease}
-@keyframes mIn{from{opacity:0;transform:scale(.97) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.modal.sm{max-width:440px}
-.mh{padding:18px 24px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
-.mt{font-size:15px;font-weight:600}
-.mb{padding:24px;overflow-y:auto;flex:1}
-.mf{padding:14px 24px;border-top:1px solid var(--bd);display:flex;justify-content:flex-end;gap:10px;flex-shrink:0;background:var(--bg2);border-radius:0 0 10px 10px}
-.xb{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:20px;line-height:1;display:flex;padding:4px;transition:color .12s;border-radius:4px}
-.xb:hover{color:var(--tx);background:rgba(255,255,255,.06)}
-
-/* ── BADGES ── */
-.badge{display:inline-block;padding:2px 9px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;border-radius:3px}
-.bg{background:var(--gbg);color:var(--gold)}.bgn{background:var(--grbg);color:var(--green)}
-.br{background:var(--rdbg);color:var(--red)}.bb{background:var(--blbg);color:var(--blue)}
-.bpu{background:var(--prbg);color:var(--purple)}.bgr{background:rgba(255,255,255,.06);color:var(--tx2)}
-
-/* ── TABS ── */
-.tabs{display:flex;border-bottom:1px solid var(--bd);margin-bottom:18px;gap:2px}
-.tab{padding:9px 15px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;color:var(--tx3);transition:all .12s;font-weight:500}
-.tab.on{color:var(--gold);border-bottom-color:var(--gold)}
-.tab:hover{color:var(--tx)}
-
-/* ── SWITCH ── */
-.sw{position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0}
-.sw input{opacity:0;width:0;height:0}
-.swt{position:absolute;cursor:pointer;inset:0;background:rgba(255,255,255,.08);border-radius:22px;transition:.2s}
-.swt::before{position:absolute;content:"";height:16px;width:16px;left:3px;bottom:3px;background:rgba(255,255,255,.3);border-radius:50%;transition:.2s}
-.sw input:checked+.swt{background:rgba(201,168,92,.7)}
-.sw input:checked+.swt::before{transform:translateX(18px);background:#07060a}
-
-/* ── UTILS ── */
-.hr{border:none;border-top:1px solid var(--bd);margin:20px 0}
-.hrl{display:flex;align-items:center;gap:12px;margin:20px 0}
-.hrl::before,.hrl::after{content:"";flex:1;border-top:1px solid var(--bd)}
-.hrl span{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx3);font-weight:600}
-.pt{height:4px;background:var(--sf2);border-radius:2px;overflow:hidden;margin-top:5px}
-.pf{height:100%;border-radius:2px;transition:width .7s ease}
-.sb-search{background:var(--sf2);border:1px solid var(--bd);color:var(--tx);padding:8px 13px;outline:none;border-radius:4px;font-size:12px;width:240px;transition:all .15s}
-.sb-search:focus{border-color:rgba(201,168,92,.35);width:280px}
-.sb-search::placeholder{color:var(--tx3)}
-.sh{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px}
-.stit{font-size:18px;font-weight:700;letter-spacing:-.02em}
-.ssub{font-size:11px;color:var(--tx3);margin-top:3px}
-.fb{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
-.csw{width:14px;height:14px;border-radius:50%;border:1px solid rgba(255,255,255,.15);display:inline-block;vertical-align:middle;margin-right:4px}
-.rb{height:6px;border-radius:3px;background:var(--sf2);overflow:hidden;margin-top:4px}
-.rf{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold3),var(--gold))}
-.rfg{background:linear-gradient(90deg,var(--green2),var(--green))}
-
-/* ── TOAST ── */
-.toasts{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{background:var(--sf);border:1px solid var(--bd2);padding:12px 16px;font-size:13px;min-width:220px;border-radius:6px;pointer-events:all;animation:tIn .2s ease;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow)}
-.toast.ok{border-left:3px solid var(--green)}.toast.err{border-left:3px solid var(--red)}.toast.info{border-left:3px solid var(--gold)}
-@keyframes tIn{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-
-/* ── LOGIN ── */
-.lw{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg)}
-.lc{background:var(--sf);border:1px solid var(--bd2);padding:48px;width:100%;max-width:420px;border-radius:12px;box-shadow:var(--shadow)}
-.lmark{width:56px;height:56px;background:linear-gradient(135deg,var(--gold3),var(--gold2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#07060a;letter-spacing:.08em;margin:0 auto 24px}
-
-/* ── EMPTY ── */
-.empty{text-align:center;padding:60px 20px;color:var(--tx3)}
-.eico{font-size:32px;margin-bottom:12px;opacity:.6}
-.empty p{font-size:13px;margin-top:4px}
-
-/* ── ORDER TRACKER ── */
-.ot{display:flex;margin-bottom:24px}
-.ots{flex:1;text-align:center;position:relative}
-.ots::after{content:"";position:absolute;top:14px;left:50%;right:-50%;height:2px;background:var(--bd);z-index:0}
-.ots:last-child::after{display:none}
-.otd{width:28px;height:28px;border-radius:50%;border:2px solid var(--bd);background:var(--sf2);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:10px;color:var(--tx3);position:relative;z-index:1;transition:all .2s}
-.otd.done{background:var(--gold);border-color:var(--gold);color:#07060a}
-.otd.act{border-color:var(--gold);color:var(--gold);box-shadow:0 0 0 4px rgba(201,168,92,.15)}
-.ots::after.done{background:var(--gold)}
-.otl{font-size:9px;text-transform:capitalize;color:var(--tx3);font-weight:500}
-.otl.done,.otl.act{color:var(--gold)}
-
-/* ── PROFIT MARGIN DISPLAY ── */
-.mgb{padding:10px 13px;background:var(--sf2);border:1px solid var(--bd);border-radius:4px;font-size:22px;font-weight:700;line-height:1.2;transition:color .2s}
-
-/* ── DRAG HIGHLIGHT ── */
-.drag-over{border-color:var(--gold)!important;background:var(--gbg)!important}
-
-/* ── BULK ACTIONS ── */
-.bulk-bar{background:var(--sf2);border:1px solid var(--bd2);border-radius:var(--rad);padding:10px 16px;display:flex;align-items:center;gap:12px;margin-bottom:14px;animation:tIn .15s ease}
-.bulk-bar.hidden{display:none}
-
-/* ── PROGRESS BAR ── */
-.upload-progress{background:var(--sf2);border-radius:4px;overflow:hidden;height:4px;margin-top:8px;display:none}
-.upload-progress.show{display:block}
-.upload-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold3),var(--gold));width:0%;transition:width .3s}
-
-/* ── QUICK STATS SPARKLINE ── */
-.sparkline{display:flex;align-items:flex-end;gap:2px;height:28px}
-.spark-bar{flex:1;background:var(--gold);border-radius:1px;opacity:.6;min-height:2px;transition:opacity .15s}
-.spark-bar:hover{opacity:1}
-
-/* ── RESPONSIVE ── */
-@media(max-width:900px){
-  :root{--sb:0px}
-  .sidebar{transform:translateX(-248px);width:248px}
-  .main{margin-left:0}
-  .stats{grid-template-columns:1fr 1fr}
-  .f2,.f3,.f4{grid-template-columns:1fr}
-  .ig{grid-template-columns:repeat(3,1fr)}
-  .menu-toggle{display:flex!important}
-}
-.menu-toggle{display:none;background:none;border:1px solid var(--bd);color:var(--tx2);width:34px;height:34px;border-radius:4px;cursor:pointer;align-items:center;justify-content:center}
+body{font-family:Outfit,sans-serif;background:#0c0b0e;color:#f0ece4;line-height:1.5;padding:24px}
+.wrap{max-width:780px;margin:0 auto}
+h1{font-size:24px;font-weight:600;letter-spacing:.02em;margin-bottom:4px}
+.sub{color:rgba(240,236,228,.45);font-size:13px;margin-bottom:28px}
+.card{background:#17151a;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:22px;margin-bottom:18px}
+.card h2{font-size:15px;font-weight:600;margin-bottom:16px;color:#c9a85c}
+label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:rgba(240,236,228,.5);margin-bottom:5px;margin-top:14px}
+label:first-child{margin-top:0}
+input,select,textarea{width:100%;background:#201e26;border:1px solid rgba(255,255,255,.1);color:#f0ece4;padding:10px 12px;border-radius:6px;font-family:inherit;font-size:14px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#c9a85c}
+textarea{resize:vertical;min-height:70px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+button{cursor:pointer;border:none;border-radius:6px;font-family:inherit;font-weight:600;font-size:13px;letter-spacing:.02em}
+.btn-main{background:#c9a85c;color:#09080a;padding:11px 22px;margin-top:18px;width:100%}
+.btn-main:hover{background:#e8c87a}
+.btn-sm{background:transparent;border:1px solid rgba(255,255,255,.15);color:#f0ece4;padding:6px 12px;font-size:12px}
+.btn-sm:hover{border-color:#c9a85c;color:#c9a85c}
+.btn-del{background:transparent;border:1px solid rgba(204,95,95,.3);color:#cc5f5f;padding:6px 12px;font-size:12px}
+.btn-del:hover{background:rgba(204,95,95,.1)}
+.upload{border:1px dashed rgba(255,255,255,.2);border-radius:6px;padding:18px;text-align:center;cursor:pointer;position:relative;margin-top:6px}
+.upload:hover{border-color:#c9a85c;background:rgba(201,168,92,.05)}
+.upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.thumb{width:60px;height:80px;border-radius:4px;overflow:hidden;position:relative;background:#201e26;border:1px solid rgba(255,255,255,.1)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb button{position:absolute;top:2px;right:2px;width:16px;height:16px;background:rgba(0,0,0,.7);color:#fff;border-radius:50%;font-size:10px;line-height:1;padding:0}
+table{width:100%;border-collapse:collapse;margin-top:6px}
+th{text-align:left;font-size:10px;text-transform:uppercase;color:rgba(240,236,228,.4);padding:8px;border-bottom:1px solid rgba(255,255,255,.08)}
+td{padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;vertical-align:middle}
+td img{width:32px;height:42px;object-fit:cover;border-radius:3px}
+.toast{position:fixed;bottom:20px;right:20px;background:#201e26;border:1px solid rgba(255,255,255,.15);padding:12px 18px;border-radius:6px;font-size:13px;z-index:999}
+.toast.ok{border-left:3px solid #5cb87a}
+.toast.err{border-left:3px solid #cc5f5f}
+.login-box{max-width:340px;margin:80px auto;text-align:center}
+.tag{display:inline-flex;align-items:center;gap:5px;background:#201e26;border:1px solid rgba(255,255,255,.1);padding:4px 10px;border-radius:4px;font-size:12px;margin:3px}
+.tag button{background:none;border:none;color:rgba(240,236,228,.4);cursor:pointer;padding:0}
+.taglist{display:flex;flex-wrap:wrap;margin-top:6px;min-height:24px}
+.linkbtn{background:none;border:none;color:#c9a85c;text-decoration:underline;cursor:pointer;font-size:12px;padding:0}
+.hidden{display:none}
 </style>
 </head>
 <body>
-<div id="root"></div>
-<div class="toasts" id="toasts"></div>
+<div id="app"></div>
+
 <script>
-"use strict";
-
-// ─────────────────────────────────────────────
-// STATE
-// ─────────────────────────────────────────────
-let TK = localStorage.getItem("adk") || "";
-const S = {
-  auth: !!TK, page: "dashboard",
-  products: [], categories: [], orders: [], settings: {}, homepage: {},
-  modal: null, ordTab: "all", prodCat: "all", prodQ: "", ordQ: "",
-  selProds: new Set(),
-  uploadingCount: 0,
+let TK = localStorage.getItem("aurah_tk") || "";
+const api = {
+  get: p => fetch("/api/admin"+p,{headers:{"X-Admin-Token":TK}}).then(r=>r.json()),
+  post:(p,b)=>fetch("/api/admin"+p,{method:"POST",headers:{"Content-Type":"application/json","X-Admin-Token":TK},body:JSON.stringify(b)}).then(r=>r.json()),
+  put: (p,b)=>fetch("/api/admin"+p,{method:"PUT",headers:{"Content-Type":"application/json","X-Admin-Token":TK},body:JSON.stringify(b)}).then(r=>r.json()),
+  del: p=>fetch("/api/admin"+p,{method:"DELETE",headers:{"X-Admin-Token":TK}}).then(r=>r.json()),
+  upload:f=>{const fd=new FormData();fd.append("image",f);return fetch("/api/admin/upload",{method:"POST",headers:{"X-Admin-Token":TK},body:fd}).then(r=>r.json());}
 };
 
-// ─────────────────────────────────────────────
-// API HELPERS
-// ─────────────────────────────────────────────
-const A = {
-  g: p => fetch("/api/admin" + p, {headers:{"X-Admin-Token": TK}}).then(r => { if(!r.ok) throw r; return r.json(); }),
-  po: (p,b) => fetch("/api/admin" + p, {method:"POST", headers:{"Content-Type":"application/json","X-Admin-Token": TK}, body:JSON.stringify(b)}).then(r => { if(!r.ok) throw r; return r.json(); }),
-  pu: (p,b) => fetch("/api/admin" + p, {method:"PUT", headers:{"Content-Type":"application/json","X-Admin-Token": TK}, body:JSON.stringify(b)}).then(r => { if(!r.ok) throw r; return r.json(); }),
-  de: p => fetch("/api/admin" + p, {method:"DELETE", headers:{"X-Admin-Token": TK}}).then(r => { if(!r.ok) throw r; return r.json(); }),
-  up: file => { const f = new FormData(); f.append("image", file); return fetch("/api/admin/upload", {method:"POST", headers:{"X-Admin-Token": TK}, body:f}).then(r => r.json()); }
-};
+let state = { products: [], categories: [], images: [] };
 
-function toast(msg, t = "ok") {
-  const d = document.createElement("div");
-  const ico = t === "ok" ? "✓" : t === "err" ? "✕" : "·";
-  d.className = "toast " + t;
-  d.innerHTML = `<span style="font-weight:700;font-size:12px;opacity:.7">${ico}</span><span>${msg}</span>`;
-  document.getElementById("toasts").appendChild(d);
-  setTimeout(() => { d.style.opacity = "0"; d.style.transition = "opacity .3s"; setTimeout(() => d.remove(), 300); }, 3000);
+function toast(msg, type="ok") {
+  const t = document.createElement("div");
+  t.className = "toast " + type;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2800);
 }
 
-async function loadAll() {
+async function checkLogin() {
+  if (!TK) { renderLogin(); return; }
   try {
-    const [pr, ca, or, se, hp] = await Promise.all([
-      A.g("/products").catch(() => []),
-      A.g("/categories").catch(() => []),
-      A.g("/orders").catch(() => []),
-      fetch("/api/settings").then(r => r.json()).catch(() => ({})),
-      fetch("/api/homepage").then(r => r.json()).catch(() => ({}))
-    ]);
-    S.products = Array.isArray(pr) ? pr : [];
-    S.categories = Array.isArray(ca) ? ca : [];
-    S.orders = Array.isArray(or) ? or : [];
-    S.settings = se || {};
-    S.homepage = hp || {};
-    render();
-  } catch(e) { toast("Load error: " + e.message, "err"); }
+    const r = await fetch("/api/admin/products", { headers: { "X-Admin-Token": TK } });
+    if (r.ok) { await loadData(); renderApp(); }
+    else renderLogin();
+  } catch(e) { renderLogin(); }
 }
 
-// ─────────────────────────────────────────────
-// ICONS
-// ─────────────────────────────────────────────
-const IC = {
-  dash: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><rect x='3' y='3' width='7' height='7' rx='1'/><rect x='14' y='3' width='7' height='7' rx='1'/><rect x='3' y='14' width='7' height='7' rx='1'/><rect x='14' y='14' width='7' height='7' rx='1'/></svg>`,
-  rev: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><polyline points='23 6 13.5 15.5 8.5 10.5 1 18'/><polyline points='17 6 23 6 23 12'/></svg>`,
-  box: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><path d='M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z'/><polyline points='3.27 6.96 12 12.01 20.73 6.96'/><line x1='12' y1='22.08' x2='12' y2='12'/></svg>`,
-  cat: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><line x1='8' y1='6' x2='21' y2='6'/><line x1='8' y1='12' x2='21' y2='12'/><line x1='8' y1='18' x2='21' y2='18'/><circle cx='3' cy='6' r='1'/><circle cx='3' cy='12' r='1'/><circle cx='3' cy='18' r='1'/></svg>`,
-  ord: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><path d='M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z'/><line x1='3' y1='6' x2='21' y2='6'/><path d='M16 10a4 4 0 01-8 0'/></svg>`,
-  home2: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><path d='M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z'/><polyline points='9 22 9 12 15 12 15 22'/></svg>`,
-  set: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><circle cx='12' cy='12' r='3'/><path d='M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z'/></svg>`,
-  plus: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><line x1='12' y1='5' x2='12' y2='19'/><line x1='5' y1='12' x2='19' y2='12'/></svg>`,
-  ed: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><path d='M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7'/><path d='M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z'/></svg>`,
-  tr: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><polyline points='3 6 5 6 21 6'/><path d='M19 6l-1 14H6L5 6'/><path d='M10 11v6'/><path d='M14 11v6'/><path d='M9 6V4h6v2'/></svg>`,
-  eye: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><path d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'/><circle cx='12' cy='12' r='3'/></svg>`,
-  upl: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><polyline points='16 16 12 12 8 16'/><line x1='12' y1='12' x2='12' y2='21'/><path d='M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3'/></svg>`,
-  img: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><rect x='3' y='3' width='18' height='18' rx='2'/><circle cx='8.5' cy='8.5' r='1.5'/><polyline points='21 15 16 10 5 21'/></svg>`,
-  check: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><polyline points='20 6 9 17 4 12'/></svg>`,
-  truck: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor'><rect x='1' y='3' width='15' height='13'/><polygon points='16 8 20 8 23 11 23 16 16 16 16 8'/><circle cx='5.5' cy='18.5' r='2.5'/><circle cx='18.5' cy='18.5' r='2.5'/></svg>`,
-  menu: `<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><line x1='3' y1='6' x2='21' y2='6'/><line x1='3' y1='12' x2='21' y2='12'/><line x1='3' y1='18' x2='21' y2='18'/></svg>`,
-  star: `<svg viewBox='0 0 24 24' fill='currentColor'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>`,
-};
-
-const esc = s => String(s || "").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-const $ = id => document.getElementById(id);
-const $$ = sel => [...document.querySelectorAll(sel)];
-const fmt = n => Number(n || 0).toLocaleString();
-const fmtD = s => new Date(s).toLocaleDateString("en", {year:"numeric", month:"short", day:"numeric"});
-const fmtDT = s => new Date(s).toLocaleString("en", {month:"short", day:"numeric", hour:"2-digit", minute:"2-digit"});
-const mg = (sell, cost) => sell > 0 && cost >= 0 ? Math.round((sell - cost) / sell * 100) : null;
-const mc = m => m === null ? "var(--tx3)" : m >= 40 ? "var(--green)" : m >= 20 ? "var(--gold)" : "var(--red)";
-const sb = s => ({pending:"bg", processing:"bb", shipped:"bpu", delivered:"bgn", cancelled:"br"}[s] || "bgr");
-const imgSrc = (url) => url ? (url.startsWith("data:") || url.startsWith("/") || url.startsWith("http") ? url : null) : null;
-
-// ─────────────────────────────────────────────
-// RENDER
-// ─────────────────────────────────────────────
-function render() {
-  const root = $("root"); if (!root) return;
-  if (!S.auth) {
-    root.innerHTML = tLogin();
-    $("tkin")?.addEventListener("keydown", e => { if(e.key === "Enter") doLogin(); });
-    return;
-  }
-  root.innerHTML = `
-    <div class="sidebar" id="sb">${tSidebar()}</div>
-    <div class="main">
-      <div class="topbar">${tTopbar()}</div>
-      <div class="content" id="cnt">${tPage()}</div>
-    </div>
-    ${S.modal ? tModal() : ""}`;
-  bindKeys();
-}
-function rp() { const c = $("cnt"); if (c) c.innerHTML = tPage(); bindKeys(); }
-
-// ─────────────────────────────────────────────
-// LOGIN
-// ─────────────────────────────────────────────
-function tLogin() {
-  return `<div class="lw"><div class="lc">
-    <div class="lmark">A</div>
-    <div style="text-align:center;margin-bottom:32px">
-      <div style="font-size:26px;letter-spacing:.22em;font-weight:700;margin-bottom:4px">AURAH</div>
-      <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--tx3)">Admin Dashboard</div>
-    </div>
-    <div class="fg"><label>Admin Token</label>
-      <input id="tkin" type="password" placeholder="Enter your admin token" style="font-family:monospace;letter-spacing:.05em;font-size:15px"/>
-    </div>
-    <button class="btn btn-g" style="width:100%;margin-top:8px;padding:12px" onclick="doLogin()">Access Dashboard</button>
-    <p style="margin-top:20px;font-size:11px;color:var(--tx3);text-align:center;line-height:1.8">
-      Default token: <code style="background:var(--sf2);padding:2px 8px;border-radius:3px;color:var(--gold)">202553</code><br/>
-      Set <code style="background:var(--sf2);padding:2px 6px;border-radius:3px">ADMIN_TOKEN</code> env var to change
-    </p>
-  </div></div>`;
+function renderLogin() {
+  document.getElementById("app").innerHTML = `
+    <div class="login-box">
+      <h1>AURAH</h1>
+      <p class="sub">Backend access</p>
+      <div class="card">
+        <label>Admin Token</label>
+        <input id="tkInput" type="password" placeholder="Enter token"/>
+        <button class="btn-main" onclick="doLogin()">Log In</button>
+      </div>
+    </div>`;
+  document.getElementById("tkInput").addEventListener("keydown", e => { if(e.key==="Enter") doLogin(); });
 }
 
 async function doLogin() {
-  const tk = $("tkin")?.value?.trim(); if (!tk) return;
-  try {
-    const r = await fetch("/api/admin/login", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({token:tk})});
-    if (r.ok) {
-      TK = tk; localStorage.setItem("adk", tk); S.auth = true;
-      toast("Welcome to AURAH Admin ✓");
-      await loadAll();
-    } else {
-      toast("Invalid token — check the default or your ADMIN_TOKEN env var", "err");
-    }
-  } catch(e) { toast("Cannot reach server. Is it running?", "err"); }
-}
-function doLogout() { TK = ""; localStorage.removeItem("adk"); S.auth = false; render(); }
-
-// ─────────────────────────────────────────────
-// LAYOUT
-// ─────────────────────────────────────────────
-function tSidebar() {
-  const pending = S.orders.filter(o => o.status === "pending").length;
-  const tr = S.orders.reduce((s,o) => s + (o.total||0), 0);
-  return `
-    <div class="sb-logo">
-      <div class="sb-logo-mark">A</div>
-      <div class="sb-logo-info"><div class="sb-logo-name">AURAH</div><div class="sb-logo-tag">Store Admin</div></div>
-    </div>
-    <nav class="sb-nav">
-      <div class="sb-section">Overview</div>
-      ${navItem("dashboard", IC.dash, "Dashboard")}
-      ${navItem("revenue", IC.rev, "Revenue & Profit")}
-      <div class="sb-section">Catalog</div>
-      ${navItem("products", IC.box, "Products", S.products.length)}
-      ${navItem("categories", IC.cat, "Categories")}
-      ${navItem("images", IC.img, "Image Library")}
-      <div class="sb-section">Commerce</div>
-      ${navItem("orders", IC.ord, "Orders", pending || null, pending ? "red" : "")}
-      <div class="sb-section">Store</div>
-      ${navItem("homepage", IC.home2, "Homepage Editor")}
-      ${navItem("settings", IC.set, "Settings")}
-    </nav>
-    <div class="sb-foot">
-      <button class="sb-live" onclick="window.open('/','_blank')">&#8599;&nbsp; View Live Store</button>
-      <button class="sb-out" onclick="doLogout()">Sign Out</button>
-      <div class="sb-version">AURAH Admin v2.0</div>
-    </div>`;
-}
-function navItem(id, ic, lb, badge, badgeClass = "") {
-  return `<button class="sb-item${S.page===id?" on":""}" onclick="goTo('${id}')">${ic}<span style="flex:1">${lb}</span>${badge ? `<span class="sb-badge ${badgeClass}">${badge}</span>` : ""}</button>`;
-}
-function tTopbar() {
-  const tr = S.orders.reduce((s,o) => s + (o.total||0), 0);
-  const titles = {dashboard:"Dashboard",revenue:"Revenue & Profit",products:"Products",categories:"Categories",images:"Image Library",orders:"Orders",homepage:"Homepage Editor",settings:"Store Settings"};
-  return `
-    <div class="tb-left">
-      <button class="menu-toggle" onclick="toggleSidebar()">${IC.menu}</button>
-      <div class="tb-title">${titles[S.page] || ""}</div>
-    </div>
-    <div class="tb-right">
-      <span><span class="live-dot"></span>Live</span>
-      <span>${S.products.length} products</span>
-      <span>${S.orders.length} orders</span>
-      <span style="color:var(--gold);font-weight:600">$${fmt(tr)} revenue</span>
-    </div>`;
-}
-function tPage() {
-  switch(S.page) {
-    case "dashboard": return tDash();
-    case "revenue": return tRev();
-    case "products": return tProds();
-    case "categories": return tCats();
-    case "images": return tImages();
-    case "orders": return tOrds();
-    case "homepage": return tHP();
-    case "settings": return tSet();
-    default: return tDash();
-  }
-}
-function goTo(p) { S.page = p; S.selProds.clear(); render(); }
-function toggleSidebar() { const sb = $("sb"); sb && sb.classList.toggle("open"); }
-
-// ─────────────────────────────────────────────
-// DASHBOARD
-// ─────────────────────────────────────────────
-function tDash() {
-  const tr = S.orders.reduce((s,o)=>s+(o.total||0),0), tc = S.orders.reduce((s,o)=>s+(o.totalCost||0),0), tp = tr - tc;
-  const pend = S.orders.filter(o=>o.status==="pending");
-  const pct = tr > 0 ? (tp/tr*100).toFixed(1) : 0;
-  const rec = [...S.orders].slice(0, 8);
-  const lowStockProds = S.products.filter(p => p.badge === "Low Stock");
-  const missingCost = S.products.filter(p => !p.costPrice).length;
-
-  // Monthly sparkline data
-  const monthly = {};
-  S.orders.forEach(o => {
-    const k = new Date(o.createdAt).toLocaleDateString("en", {month:"short"});
-    if (!monthly[k]) monthly[k] = 0;
-    monthly[k] += (o.total || 0);
-  });
-  const mEntries = Object.entries(monthly).slice(-6);
-  const maxM = Math.max(...mEntries.map(([,v])=>v), 1);
-
-  return `
-  <div class="stats">
-    <div class="stat" style="cursor:pointer" onclick="goTo('revenue')">
-      <div class="stat-accent" style="background:linear-gradient(90deg,var(--gold3),var(--gold2))"></div>
-      <div class="stat-ico g-ico">💰</div>
-      <div class="stat-lbl">Total Revenue</div>
-      <div class="stat-num" style="color:var(--gold)">$${fmt(tr)}</div>
-      <div class="stat-sub">${S.orders.length} orders total</div>
-    </div>
-    <div class="stat" style="cursor:pointer" onclick="goTo('revenue')">
-      <div class="stat-accent" style="background:var(--green)"></div>
-      <div class="stat-ico gr-ico">📈</div>
-      <div class="stat-lbl">Net Profit</div>
-      <div class="stat-num" style="color:var(--green)">$${fmt(tp)}</div>
-      <div class="stat-sub">${pct}% margin ${tc ? "" : "· set cost prices"}</div>
-    </div>
-    <div class="stat">
-      <div class="stat-accent" style="background:var(--blue)"></div>
-      <div class="stat-ico b-ico">📦</div>
-      <div class="stat-lbl">Products</div>
-      <div class="stat-num">${S.products.length}</div>
-      <div class="stat-sub">${S.products.filter(p=>p.featured).length} featured · ${missingCost} missing cost</div>
-    </div>
-    <div class="stat" style="cursor:pointer;${pend.length>0?"":""}" onclick="goTo('orders')">
-      <div class="stat-accent" style="background:${pend.length>0?"var(--gold)":"var(--purple)"}"></div>
-      <div class="stat-ico ${pend.length>0?"g-ico":"p-ico"}">${pend.length>0?"🔔":"✅"}</div>
-      <div class="stat-lbl">Pending Orders</div>
-      <div class="stat-num" style="color:${pend.length>0?"var(--gold)":"var(--tx)"}">${pend.length}</div>
-      <div class="stat-sub">${S.orders.filter(o=>o.status==="delivered").length} delivered · ${S.orders.filter(o=>o.status==="shipped").length} shipped</div>
-    </div>
-  </div>
-
-  <div style="display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start">
-    <div style="display:flex;flex-direction:column;gap:16px">
-
-      ${pend.length > 0 ? `
-      <div class="card" style="border-color:rgba(201,168,92,.2);background:var(--gbg)">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-          <span style="font-size:16px">🔔</span>
-          <div><div class="ct" style="color:var(--gold)">${pend.length} order${pend.length!==1?"s":""} awaiting action</div>
-          <div class="cs">These need to be processed or shipped</div></div>
-          <button class="btn btn-sm btn-g" style="margin-left:auto" onclick="goTo('orders')">View Orders</button>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px">
-          ${pend.slice(0,4).map(o=>`<div style="background:var(--sf);border:1px solid var(--bd);border-radius:5px;padding:8px 12px;font-size:12px;cursor:pointer" onclick="openOrdModal('${o.id}')">
-            <div style="font-family:monospace;color:var(--gold);font-size:10px">${o.id}</div>
-            <div style="font-weight:500;margin-top:2px">${o.firstName||""} ${o.lastName||""}</div>
-            <div style="color:var(--tx2)">$${fmt(o.total)}</div>
-          </div>`).join("")}
-          ${pend.length > 4 ? `<div style="display:flex;align-items:center;padding:8px 12px;color:var(--tx3);font-size:12px">+${pend.length-4} more</div>` : ""}
-        </div>
-      </div>` : ""}
-
-      <div class="card" style="padding:0;overflow:hidden">
-        <div class="ch" style="padding:16px 20px 0">
-          <div><div class="ct">Recent Orders</div><div class="cs">Latest ${rec.length} of ${S.orders.length} total</div></div>
-          <button class="btn btn-o btn-sm" onclick="goTo('orders')">View All</button>
-        </div>
-        ${rec.length === 0 ? `<div class="empty"><div class="eico">📋</div><p>No orders yet.<br><span style="font-size:12px;color:var(--tx4)">Orders from your store will appear here.</span></p></div>` : `
-        <div class="tw">
-          <table><thead><tr><th>Order</th><th>Customer</th><th>Revenue</th><th>Profit</th><th>Status</th><th>Date</th></tr></thead>
-          <tbody>${rec.map(o => {
-            const p = (o.total||0) - (o.totalCost||0);
-            return `<tr class="cr" onclick="openOrdModal('${o.id}')">
-              <td><span style="font-family:monospace;font-size:11px;color:var(--gold)">${o.id}</span></td>
-              <td><div style="font-weight:500">${o.firstName||""} ${o.lastName||""}</div><div style="font-size:10px;color:var(--tx3)">${o.email||""}</div></td>
-              <td style="font-weight:700;color:var(--gold)">$${fmt(o.total)}</td>
-              <td style="color:${o.totalCost&&p>=0?"var(--green)":"var(--tx3)"};font-weight:600">${o.totalCost ? (p>=0?"+":"")+"$"+fmt(p) : "—"}</td>
-              <td><span class="badge ${sb(o.status)}">${o.status||"pending"}</span></td>
-              <td style="font-size:11px;color:var(--tx3)">${fmtD(o.createdAt)}</td>
-            </tr>`;
-          }).join("")}</tbody></table>
-        </div>`}
-      </div>
-
-    </div>
-    <div style="display:flex;flex-direction:column;gap:14px">
-      <div class="card">
-        <div class="ct" style="margin-bottom:14px">Quick Stats</div>
-        ${[
-          {l:"Gross Revenue", v:"$"+fmt(tr), c:"var(--gold)"},
-          {l:"Cost of Goods", v: tc ? "$"+fmt(tc) : "Not tracked", c:"var(--red)"},
-          {l:"Net Profit", v:"$"+fmt(tp), c:tp>=0?"var(--green)":"var(--red)", b:true},
-          {l:"Profit Margin", v:pct+"%", c:parseFloat(pct)>=30?"var(--green)":parseFloat(pct)>=15?"var(--gold)":"var(--red)"},
-          {l:"Avg Order", v:"$"+fmt(S.orders.length ? Math.round(tr/S.orders.length) : 0), c:"var(--tx)"},
-        ].map(r=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 11px;background:var(--sf2);border-radius:4px;margin-bottom:5px">
-          <span style="font-size:12px;color:var(--tx2)">${r.l}</span>
-          <span style="font-size:13px;font-weight:${r.b?700:500};color:${r.c}">${r.v}</span>
-        </div>`).join("")}
-        ${mEntries.length > 0 ? `
-        <div style="margin-top:14px">
-          <div style="font-size:10px;color:var(--tx3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">Revenue trend</div>
-          <div class="sparkline">${mEntries.map(([mo,v])=>`<div class="spark-bar" title="${mo}: $${fmt(v)}" style="height:${Math.round(v/maxM*100)}%"></div>`).join("")}</div>
-        </div>` : ""}
-        <button class="btn btn-o btn-sm" style="width:100%;margin-top:12px" onclick="goTo('revenue')">Full Revenue Report →</button>
-      </div>
-
-      <div class="card">
-        <div class="ct" style="margin-bottom:14px">Featured Products (${S.products.filter(p=>p.featured).length})</div>
-        ${S.products.filter(p=>p.featured).slice(0,5).map(p=>`
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:pointer;padding:6px;border-radius:4px;transition:background .12s" onmouseover="this.style.background='var(--sf2)'" onmouseout="this.style.background=''" onclick="openProdModal(${p.id})">
-          <div style="width:36px;height:48px;background:var(--sf2);border:1px solid var(--bd);border-radius:4px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center">
-            ${imgSrc(p.images&&p.images[0]) ? `<img src="${esc(p.images[0])}" style="width:100%;height:100%;object-fit:cover"/>` : `<span style="font-size:8px;color:var(--tx3)">${esc(p.name).slice(0,3)}</span>`}
-          </div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:12px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.name)}</div>
-            <div style="font-size:10px;color:var(--gold)">$${p.price}${p.costPrice?` · Cost $${p.costPrice}`:""}</div>
-          </div>
-          ${mg(p.price,p.costPrice)!==null ? `<span style="font-size:11px;font-weight:700;color:${mc(mg(p.price,p.costPrice))}">${mg(p.price,p.costPrice)}%</span>` : ""}
-        </div>`).join("")}
-        ${S.products.filter(p=>p.featured).length===0 ? `<div style="color:var(--tx3);font-size:12px;text-align:center;padding:12px">No featured products</div>` : ""}
-      </div>
-
-      ${missingCost > 0 ? `<div class="card" style="border-color:rgba(201,168,92,.2)">
-        <div class="ct" style="color:var(--gold);margin-bottom:8px">⚠ ${missingCost} products missing cost price</div>
-        <p style="font-size:12px;color:var(--tx3);margin-bottom:12px">Add cost prices to track profit margins accurately.</p>
-        <button class="btn btn-sm btn-o" onclick="goTo('products')">Edit Products →</button>
-      </div>` : ""}
-    </div>
-  </div>`;
-}
-
-// ─────────────────────────────────────────────
-// REVENUE
-// ─────────────────────────────────────────────
-function tRev() {
-  const orders = S.orders;
-  const tr = orders.reduce((s,o)=>s+(o.total||0),0), tc = orders.reduce((s,o)=>s+(o.totalCost||0),0), tp = tr-tc;
-  const pct = tr>0?(tp/tr*100).toFixed(1):0, avg = orders.length?Math.round(tr/orders.length):0;
-  const monthly = {};
-  orders.forEach(o => {
-    const k = new Date(o.createdAt).toLocaleDateString("en", {year:"numeric", month:"short"});
-    if (!monthly[k]) monthly[k] = {rev:0, cost:0, cnt:0};
-    monthly[k].rev += (o.total||0); monthly[k].cost += (o.totalCost||0); monthly[k].cnt++;
-  });
-  const months = Object.entries(monthly).slice(-6);
-  const maxR = Math.max(...months.map(([,v])=>v.rev), 1);
-  const byP = S.products.map(p => {
-    let u=0, r=0;
-    orders.forEach(o => (o.items||[]).forEach(i => { if(i.id===p.id){u+=i.qty;r+=i.price*i.qty;} }));
-    const c=(p.costPrice||0)*u, pr=r-c, pm=r>0?(pr/r*100).toFixed(1):0;
-    return {p,u,r,c,pr,pm};
-  }).filter(x=>x.r>0).sort((a,b)=>b.pr-a.pr);
-
-  return `
-  <div class="stats">
-    <div class="stat"><div class="stat-accent" style="background:linear-gradient(90deg,var(--gold3),var(--gold2))"></div><div class="stat-ico g-ico">💵</div><div class="stat-lbl">Total Revenue</div><div class="stat-num" style="color:var(--gold)">$${fmt(tr)}</div><div class="stat-sub">${orders.length} orders</div></div>
-    <div class="stat"><div class="stat-accent" style="background:var(--red)"></div><div class="stat-ico r-ico">🏭</div><div class="stat-lbl">Total Cost</div><div class="stat-num" style="color:var(--red)">$${fmt(tc)}</div><div class="stat-sub">Cost of goods sold</div></div>
-    <div class="stat"><div class="stat-accent" style="background:var(--green)"></div><div class="stat-ico gr-ico">📊</div><div class="stat-lbl">Net Profit</div><div class="stat-num" style="color:var(--green)">$${fmt(tp)}</div><div class="stat-sub">${pct}% margin</div></div>
-    <div class="stat"><div class="stat-accent" style="background:var(--blue)"></div><div class="stat-ico b-ico">🎫</div><div class="stat-lbl">Avg Order Value</div><div class="stat-num">$${fmt(avg)}</div><div class="stat-sub">per order</div></div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-    <div class="card">
-      <div class="ct" style="margin-bottom:16px">Monthly Revenue vs Profit</div>
-      ${months.length===0 ? `<div class="empty"><div class="eico">📊</div><p>No orders yet</p></div>` :
-      months.map(([mo,v]) => {
-        const pr=v.rev-v.cost, rw=Math.round(v.rev/maxR*100), pw=v.rev>0?Math.round(pr/v.rev*rw):0;
-        return `<div style="margin-bottom:14px">
-          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px">
-            <span style="color:var(--tx2);font-weight:600">${mo}</span>
-            <span style="color:var(--tx3)">${v.cnt} orders</span>
-            <span style="color:var(--gold)">$${fmt(v.rev)}</span>
-            <span style="color:${pr>=0?"var(--green)":"var(--red)"}">${pr>=0?"+":""}$${fmt(pr)}</span>
-          </div>
-          <div class="rb"><div class="rf" style="width:${rw}%"></div></div>
-          <div class="rb" style="margin-top:3px"><div class="rf rfg" style="width:${Math.max(0,pw)}%"></div></div>
-        </div>`;
-      }).join("")}
-      <div style="display:flex;gap:14px;margin-top:8px;font-size:10px;color:var(--tx3)">
-        <span><span style="display:inline-block;width:12px;height:3px;background:var(--gold);margin-right:4px;vertical-align:middle;border-radius:2px"></span>Revenue</span>
-        <span><span style="display:inline-block;width:12px;height:3px;background:var(--green);margin-right:4px;vertical-align:middle;border-radius:2px"></span>Profit</span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct" style="margin-bottom:16px">Profit Breakdown</div>
-      ${[
-        {l:"Gross Revenue",v:"$"+fmt(tr),c:"var(--gold)"},
-        {l:"Cost of Goods Sold",v:tc?"− $"+fmt(tc):"Not tracked",c:"var(--red)"},
-        {l:"Net Profit",v:"$"+fmt(tp),c:tp>=0?"var(--green)":"var(--red)",b:true},
-        {l:"Profit Margin",v:pct+"%",c:parseFloat(pct)>=30?"var(--green)":parseFloat(pct)>=15?"var(--gold)":"var(--red)"},
-        {l:"Avg Order Value",v:"$"+fmt(avg),c:"var(--tx)"},
-        {l:"Delivered",v:orders.filter(o=>o.status==="delivered").length+" orders",c:"var(--blue)"},
-        {l:"Cancelled",v:orders.filter(o=>o.status==="cancelled").length+" orders",c:"var(--red)"},
-      ].map(r=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--sf2);border-radius:4px;margin-bottom:5px">
-        <span style="font-size:12px;color:var(--tx2)">${r.l}</span>
-        <span style="font-size:13px;font-weight:${r.b?700:500};color:${r.c}">${r.v}</span>
-      </div>`).join("")}
-    </div>
-  </div>
-  <div class="card">
-    <div class="ch"><div><div class="ct">Product Profit Analysis</div><div class="cs">Set cost prices per product for accurate margin tracking</div></div><button class="btn btn-o btn-sm" onclick="goTo('products')">Edit Cost Prices</button></div>
-    ${byP.length===0 ? `<div class="empty"><div class="eico">📦</div><p>No sales data yet</p></div>` : `
-    <div class="tw"><table>
-      <thead><tr><th>Product</th><th>Units Sold</th><th>Revenue</th><th>Cost</th><th>Profit</th><th>Margin</th><th>Bar</th></tr></thead>
-      <tbody>${byP.map(({p,u,r,c,pr,pm}) => {
-        const clr = parseFloat(pm)>=40?"var(--green)":parseFloat(pm)>=20?"var(--gold)":"var(--red)";
-        return `<tr>
-          <td><div style="font-weight:500">${esc(p.name)}</div><div style="font-size:10px;color:var(--tx3)">Sell $${p.price} · Cost ${p.costPrice?"$"+p.costPrice:"<span style='color:var(--red)'>not set</span>"}</div></td>
-          <td>${u}</td><td style="font-weight:700;color:var(--gold)">$${fmt(r)}</td>
-          <td style="color:var(--red)">${c?"$"+fmt(c):"—"}</td>
-          <td style="font-weight:700;color:${pr>=0?"var(--green)":"var(--red)"}">${pr>=0?"+":""}$${fmt(pr)}</td>
-          <td style="font-weight:700;color:${clr}">${pm}%</td>
-          <td style="width:80px"><div class="pt"><div class="pf" style="width:${Math.min(100,Math.max(0,pm))}%;background:${clr}"></div></div></td>
-        </tr>`;
-      }).join("")}</tbody>
-    </table></div>`}
-  </div>`;
-}
-
-// ─────────────────────────────────────────────
-// PRODUCTS
-// ─────────────────────────────────────────────
-function tProds() {
-  let list = S.products;
-  if (S.prodCat !== "all") list = list.filter(p => p.collection === S.prodCat);
-  if (S.prodQ) list = list.filter(p => p.name.toLowerCase().includes(S.prodQ.toLowerCase()) || (p.subtitle||"").toLowerCase().includes(S.prodQ.toLowerCase()));
-  const sel = S.selProds;
-
-  return `
-  <div class="sh">
-    <div><div class="stit">Products</div><div class="ssub">${S.products.length} total · ${S.products.filter(p=>p.featured).length} featured · ${S.products.filter(p=>!p.costPrice).length} missing cost</div></div>
-    <button class="btn btn-g" onclick="openProdModal(null)">${IC.plus} Add Product</button>
-  </div>
-  <div class="fb">
-    <input class="sb-search" placeholder="🔍  Search products…" value="${esc(S.prodQ)}" oninput="S.prodQ=this.value;rp()"/>
-    <button class="btn btn-sm ${S.prodCat==="all"?"btn-g":"btn-o"}" onclick="S.prodCat='all';rp()">All (${S.products.length})</button>
-    ${S.categories.map(c=>`<button class="btn btn-sm ${S.prodCat===c.id?"btn-g":"btn-o"}" onclick="S.prodCat='${c.id}';rp()">${esc(c.label)} (${S.products.filter(p=>p.collection===c.id).length})</button>`).join("")}
-  </div>
-  <div class="bulk-bar ${sel.size===0?"hidden":""}" id="bulk-bar">
-    <span style="font-size:13px;font-weight:500">${sel.size} selected</span>
-    <button class="btn btn-sm btn-g" onclick="bulkFeat(true)">⭐ Feature All</button>
-    <button class="btn btn-sm btn-o" onclick="bulkFeat(false)">Unfeature All</button>
-    <button class="btn btn-sm btn-d" onclick="bulkDelete()">🗑 Delete Selected</button>
-    <button class="btn btn-sm btn-o" style="margin-left:auto" onclick="S.selProds.clear();rp()">Clear</button>
-  </div>
-  <div class="card" style="padding:0;overflow:hidden">
-    <div class="tw"><table>
-      <thead><tr>
-        <th style="width:36px"><input type="checkbox" id="chk-all" onchange="toggleAllProds(this.checked)" style="cursor:pointer"/></th>
-        <th>Image</th><th>Product</th><th>Category</th><th>Cost</th><th>Price</th><th>Margin</th><th>Badge</th><th>Featured</th><th>Actions</th>
-      </tr></thead>
-      <tbody>${list.length===0 ? `<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--tx3)">No products found</td></tr>` :
-      list.map(p => {
-        const m = mg(p.price, p.costPrice);
-        const checked = sel.has(p.id);
-        return `<tr style="${checked?"background:var(--gbg)":""}">
-          <td><input type="checkbox" ${checked?"checked":""} onchange="toggleProdSel(${p.id},this.checked)" style="cursor:pointer"/></td>
-          <td style="padding:10px 14px">
-            <div style="width:40px;height:54px;background:var(--sf2);border:1px solid var(--bd);border-radius:4px;overflow:hidden;display:flex;align-items:center;justify-content:center">
-              ${imgSrc(p.images&&p.images[0]) ? `<img src="${esc(p.images[0])}" style="width:100%;height:100%;object-fit:cover"/>` : `<span style="font-size:8px;color:var(--tx3)">${IC.img}</span>`}
-            </div>
-          </td>
-          <td>
-            <div style="font-weight:500">${esc(p.name)}</div>
-            <div style="font-size:10px;color:var(--tx3)">${esc(p.subtitle||"")}</div>
-          </td>
-          <td><span style="background:var(--sf2);border:1px solid var(--bd);padding:2px 8px;font-size:10px;border-radius:3px">${esc(p.collection)}</span></td>
-          <td>${p.costPrice?`<span style="color:var(--red);font-weight:500">$${p.costPrice}</span>`:`<span style="color:var(--tx4);font-size:10px">⚠ None</span>`}</td>
-          <td><span style="font-weight:700;color:var(--gold)">$${p.price}</span>${p.originalPrice?`<span style="text-decoration:line-through;font-size:10px;color:var(--tx3);margin-left:4px">$${p.originalPrice}</span>`:""}</td>
-          <td>${m!==null?`<span style="font-weight:700;color:${mc(m)}">${m}%</span>`:`<span style="color:var(--tx4)">—</span>`}</td>
-          <td>${p.badge?`<span class="badge bg">${esc(p.badge)}</span>`:""}</td>
-          <td><label class="sw"><input type="checkbox" ${p.featured?"checked":""} onchange="toggleFeat(${p.id},this.checked)"><span class="swt"></span></label></td>
-          <td><div style="display:flex;gap:5px">
-            <button class="bi" onclick="openProdModal(${p.id})" title="Edit">${IC.ed}</button>
-            <button class="bi bi-r" onclick="delProd(${p.id})" title="Delete">${IC.tr}</button>
-          </div></td>
-        </tr>`;
-      }).join("")}</tbody>
-    </table></div>
-  </div>`;
-}
-
-function toggleProdSel(id, val) { val ? S.selProds.add(id) : S.selProds.delete(id); rp(); }
-function toggleAllProds(val) { if(val) S.products.forEach(p=>S.selProds.add(p.id)); else S.selProds.clear(); rp(); }
-async function bulkFeat(val) {
-  const ids = [...S.selProds];
-  toast(`Updating ${ids.length} products…`, "info");
-  await Promise.all(ids.map(id => A.pu("/products/"+id, {featured:val}).then(u=>{S.products=S.products.map(p=>p.id===id?u:p);})));
-  S.selProds.clear(); toast(val?"Marked featured":"Removed from featured"); rp();
-}
-async function bulkDelete() {
-  if (!confirm(`Delete ${S.selProds.size} products? This cannot be undone.`)) return;
-  const ids = [...S.selProds];
-  await Promise.all(ids.map(id => A.de("/products/"+id)));
-  S.products = S.products.filter(p => !ids.includes(p.id));
-  S.selProds.clear(); toast("Deleted "+ids.length+" products"); rp();
-}
-
-// ─────────────────────────────────────────────
-// CATEGORIES
-// ─────────────────────────────────────────────
-function tCats() {
-  return `
-  <div class="sh"><div><div class="stit">Categories</div><div class="ssub">Manage product collections</div></div><button class="btn btn-g" onclick="openCatModal(null)">${IC.plus} Add Category</button></div>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
-    ${S.categories.map(c => {
-      const cnt = S.products.filter(p=>p.collection===c.id).length;
-      const rev = S.orders.reduce((s,o)=>s+(o.items||[]).filter(i=>S.products.find(p=>p.id===i.id&&p.collection===c.id)).reduce((a,i)=>a+i.price*i.qty,0),0);
-      return `<div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
-          <div>
-            <div style="font-size:17px;font-weight:700">${esc(c.label)}</div>
-            <div style="font-size:10px;color:var(--tx3);font-family:monospace;margin-top:3px;letter-spacing:.04em">${c.id}</div>
-          </div>
-          <div style="display:flex;gap:5px">
-            <button class="bi" onclick="openCatModal('${c.id}')">${IC.ed}</button>
-            <button class="bi bi-r" onclick="delCat('${c.id}')">${IC.tr}</button>
-          </div>
-        </div>
-        <div style="display:flex;gap:24px;margin-bottom:12px">
-          <div><div style="font-size:24px;font-weight:700;color:var(--gold)">${cnt}</div><div style="font-size:10px;color:var(--tx3)">Products</div></div>
-          <div><div style="font-size:24px;font-weight:700;color:var(--green)">$${fmt(rev)}</div><div style="font-size:10px;color:var(--tx3)">Revenue</div></div>
-        </div>
-        <div class="pt"><div class="pf" style="width:${Math.min(100,cnt/Math.max(1,S.products.length)*100)}%"></div></div>
-      </div>`;
-    }).join("")}
-    ${S.categories.length===0?`<div class="card" style="text-align:center;padding:40px;color:var(--tx3);grid-column:1/-1"><div class="eico">📂</div><p>No categories yet</p></div>`:""}
-  </div>`;
-}
-
-// ─────────────────────────────────────────────
-// IMAGE LIBRARY
-// ─────────────────────────────────────────────
-function tImages() {
-  const allImgs = [];
-  S.products.forEach(p => {
-    (p.images||[]).forEach(img => {
-      if (imgSrc(img)) allImgs.push({url:img, prodName:p.name, prodId:p.id});
-    });
-  });
-  return `
-  <div class="sh"><div><div class="stit">Image Library</div><div class="ssub">${allImgs.length} images across ${S.products.length} products</div></div>
-    <label class="btn btn-g" style="cursor:pointer"><input type="file" accept="image/*" multiple style="display:none" onchange="uploadLibraryImgs(this)"/>${IC.upl} Upload Images</label>
-  </div>
-  <div class="card" style="margin-bottom:16px">
-    <div class="csec">Upload Images</div>
-    <div id="lib-drop" class="iup" style="aspect-ratio:unset;padding:32px;gap:10px" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleLibDrop(event)">
-      <input type="file" accept="image/*" multiple onchange="uploadLibraryImgs(this)"/>
-      ${IC.upl}
-      <span style="font-size:12px">Drop images here or click to upload<br><span style="color:var(--tx4)">PNG, JPG, WebP up to 5MB each</span></span>
-      <div class="upload-progress" id="lib-prog"><div class="upload-progress-fill" id="lib-prog-fill"></div></div>
-    </div>
-    <p style="font-size:11px;color:var(--tx3);margin-top:10px">Images uploaded here are stored and can be used in product listings.</p>
-  </div>
-  <div class="card">
-    <div class="csec">Product Images (${allImgs.length})</div>
-    ${allImgs.length===0 ? `<div class="empty"><div class="eico">🖼</div><p>No images yet.<br><span style="font-size:12px">Upload images when editing products.</span></p></div>` :
-    `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px">
-      ${allImgs.map(({url,prodName,prodId})=>`
-      <div style="position:relative;border-radius:6px;overflow:hidden;background:var(--sf2);border:1px solid var(--bd);cursor:pointer;transition:border-color .15s" title="${esc(prodName)}" onclick="openProdModal(${prodId})" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--bd)'">
-        <div style="aspect-ratio:3/4"><img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover"/></div>
-        <div style="padding:5px 7px;background:var(--sf3)">
-          <div style="font-size:9px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(prodName)}</div>
-        </div>
-      </div>`).join("")}
-    </div>`}
-  </div>`;
-}
-
-async function uploadLibraryImgs(input) {
-  const files = Array.from(input.files); if (!files.length) return;
-  const prog = $("lib-prog"), fill = $("lib-prog-fill");
-  if (prog) { prog.classList.add("show"); }
-  let done = 0;
-  toast(`Uploading ${files.length} image${files.length>1?"s":""}…`, "info");
-  for (const file of files) {
-    try { await A.up(file); done++; if(fill) fill.style.width=(done/files.length*100)+"%"; } catch(e) { toast("Failed: "+file.name,"err"); }
-  }
-  if (prog) prog.classList.remove("show");
-  toast("Uploaded "+done+" image"+( done!==1?"s":""));
-}
-
-async function handleLibDrop(e) {
-  e.preventDefault(); e.currentTarget.classList.remove("drag");
-  const files = Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith("image/"));
-  if (!files.length) return;
-  toast(`Uploading ${files.length} dropped image${files.length>1?"s":""}…`, "info");
-  let done = 0;
-  for (const file of files) { try { await A.up(file); done++; } catch(e) { toast("Failed: "+file.name,"err"); } }
-  toast("Uploaded "+done+" image"+( done!==1?"s":""));
-}
-
-// ─────────────────────────────────────────────
-// ORDERS
-// ─────────────────────────────────────────────
-function tOrds() {
-  const tabs = ["all","pending","processing","shipped","delivered","cancelled"];
-  let list = S.ordTab==="all" ? S.orders : S.orders.filter(o=>o.status===S.ordTab);
-  if (S.ordQ) list = list.filter(o =>
-    (o.id||"").toLowerCase().includes(S.ordQ.toLowerCase()) ||
-    (o.firstName||"").toLowerCase().includes(S.ordQ.toLowerCase()) ||
-    (o.lastName||"").toLowerCase().includes(S.ordQ.toLowerCase()) ||
-    (o.email||"").toLowerCase().includes(S.ordQ.toLowerCase())
-  );
-  const totalRev = S.orders.reduce((s,o)=>s+(o.total||0),0);
-
-  return `
-  <div class="sh">
-    <div><div class="stit">Orders</div><div class="ssub">${S.orders.length} total · $${fmt(totalRev)} revenue</div></div>
-    <input class="sb-search" placeholder="🔍  Search orders…" value="${esc(S.ordQ)}" oninput="S.ordQ=this.value;rp()"/>
-  </div>
-  <div class="tabs">${tabs.map(t=>`<div class="tab${S.ordTab===t?" on":""}" onclick="S.ordTab='${t}';rp()">
-    ${t==="all"?"All":t.charAt(0).toUpperCase()+t.slice(1)} (${t==="all"?S.orders.length:S.orders.filter(o=>o.status===t).length})
-  </div>`).join("")}</div>
-  <div class="card" style="padding:0;overflow:hidden">
-    ${list.length===0 ? `<div class="empty"><div class="eico">📋</div><p>No orders${S.ordTab!=="all"?" with status: "+S.ordTab:""}</p></div>` : `
-    <div class="tw"><table>
-      <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Revenue</th><th>Cost</th><th>Profit</th><th>Status</th><th>Date</th><th></th></tr></thead>
-      <tbody>${list.map(o => {
-        const pr = (o.total||0) - (o.totalCost||0);
-        return `<tr>
-          <td><span style="font-family:monospace;font-size:11px;color:var(--gold)">${o.id}</span></td>
-          <td>
-            <div style="font-weight:500">${o.firstName||""} ${o.lastName||""}</div>
-            <div style="font-size:10px;color:var(--tx3)">${o.email||""}</div>
-          </td>
-          <td>${(o.items||[]).length} item${(o.items||[]).length!==1?"s":""}</td>
-          <td style="font-weight:700;color:var(--gold)">$${fmt(o.total)}</td>
-          <td style="color:var(--red)">${o.totalCost?"$"+fmt(o.totalCost):"—"}</td>
-          <td style="font-weight:600;color:${o.totalCost&&pr>=0?"var(--green)":"var(--tx3)"}">${o.totalCost?(pr>=0?"+":"")+"$"+fmt(pr):"—"}</td>
-          <td>
-            <select onchange="updOrdSt('${o.id}',this.value)" style="background:var(--sf2);border:1px solid var(--bd);color:var(--tx);padding:5px 8px;font-size:11px;border-radius:4px;outline:none;cursor:pointer">
-              ${["pending","processing","shipped","delivered","cancelled"].map(s=>`<option value="${s}"${o.status===s?" selected":""}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join("")}
-            </select>
-          </td>
-          <td style="font-size:11px;color:var(--tx3)">${fmtD(o.createdAt)}</td>
-          <td><button class="bi" onclick="openOrdModal('${o.id}')" title="View details">${IC.eye}</button></td>
-        </tr>`;
-      }).join("")}</tbody>
-    </table></div>`}
-  </div>`;
-}
-
-// ─────────────────────────────────────────────
-// HOMEPAGE EDITOR
-// ─────────────────────────────────────────────
-function tHP() {
-  const hp = S.homepage||{}, hero = hp.hero||{}, tls = hp.testimonials||[];
-  return `
-  <div class="sh"><div><div class="stit">Homepage Editor</div><div class="ssub">Save then reload the store to see changes</div></div><button class="btn btn-g" onclick="saveHP()">💾 Save All</button></div>
-  <div style="display:grid;gap:16px">
-    <div class="card">
-      <div class="csec">Hero Section</div>
-      <div class="f2" style="margin-bottom:14px">
-        <div class="fg nm"><label>Badge Text</label><input id="hb" value="${esc(hero.badge||"")}"/></div>
-        <div class="fg nm"><label>Primary Button</label><input id="hc" value="${esc(hero.ctaText||"")}"/></div>
-      </div>
-      <div class="fg"><label>Main Headline</label><input id="hh" value="${esc(hero.headline||"")}"/></div>
-      <div class="fg"><label>Subtext / Description</label><textarea id="hs" rows="2">${esc(hero.subtext||"")}</textarea></div>
-      <div class="fg nm"><label>Secondary Button</label><input id="hc2" value="${esc(hero.ctaSecondary||"")}"/></div>
-    </div>
-    <div class="card">
-      <div class="csec">Marquee Banner</div>
-      <div class="fg nm"><label>Items — separate with commas, use · as divider</label><input id="hm" value="${esc((hp.marquee||[]).join(", "))}"/></div>
-    </div>
-    <div class="card">
-      <div class="ch">
-        <div><div class="csec" style="margin-bottom:0">Customer Testimonials (${tls.length})</div></div>
-        <button class="btn btn-sm btn-o" onclick="addT()">+ Add Testimonial</button>
-      </div>
-      <div id="tlist">${tls.map((t,i)=>`<div class="csm" style="margin-bottom:12px;padding:16px">
-        <div class="f2" style="margin-bottom:12px">
-          <div class="fg nm"><label>Quote</label><input class="tq" value="${esc(t.quote||"")}"/></div>
-          <div class="fg nm"><label>Author Name</label><input class="ta" value="${esc(t.author||"")}"/></div>
-        </div>
-        <div class="f3">
-          <div class="fg nm"><label>Role / Title</label><input class="tr2" value="${esc(t.role||"")}"/></div>
-          <div class="fg nm"><label>Product</label><input class="tp" value="${esc(t.product||"")}"/></div>
-          <div class="fg nm"><label>Rating (1–5)</label><input type="number" class="tra" min="1" max="5" value="${t.rating||5}"/></div>
-        </div>
-        <div style="text-align:right;margin-top:12px"><button class="btn btn-xs btn-d" onclick="rmT(${i})">Remove</button></div>
-      </div>`).join("")}</div>
-    </div>
-  </div>`;
-}
-
-// ─────────────────────────────────────────────
-// SETTINGS
-// ─────────────────────────────────────────────
-function tSet() {
-  const s = S.settings||{};
-  return `
-  <div class="sh"><div><div class="stit">Store Settings</div><div class="ssub">Reload the store after saving changes</div></div><button class="btn btn-g" onclick="saveSet()">💾 Save Settings</button></div>
-  <div style="display:grid;gap:16px">
-    <div class="card">
-      <div class="csec">Brand Identity</div>
-      <div class="f2" style="margin-bottom:14px">
-        <div class="fg nm"><label>Store Name</label><input id="sn" value="${esc(s.storeName||"AURAH")}"/></div>
-        <div class="fg nm"><label>Tagline</label><input id="st" value="${esc(s.tagline||"")}"/></div>
-      </div>
-      <div class="f2">
-        <div class="fg nm"><label>Contact Email</label><input id="se" type="email" value="${esc(s.email||"")}"/></div>
-        <div class="fg nm"><label>Instagram Handle</label><input id="si" value="${esc(s.instagram||"")}"/></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="csec">Appearance</div>
-      <div class="f4">
-        <div class="fg nm"><label>Accent Color</label><input id="sa" type="color" value="${s.accentColor||"#c9a85c"}"/></div>
-        <div class="fg nm"><label>Theme</label><select id="sth"><option value="dark"${s.theme==="dark"?" selected":""}>Dark</option><option value="light"${s.theme==="light"?" selected":""}>Light</option></select></div>
-        <div class="fg nm"><label>Font</label><select id="sf"><option value="cormorant"${s.fontPair==="cormorant"?" selected":""}>Cormorant Garamond</option><option value="outfit"${s.fontPair==="outfit"?" selected":""}>Outfit Sans</option></select></div>
-        <div class="fg nm"><label>Hero Layout</label><select id="sh2"><option value="split"${s.heroLayout==="split"?" selected":""}>Split</option><option value="centered"${s.heroLayout==="centered"?" selected":""}>Centered</option></select></div>
-      </div>
-      <div class="fg" style="margin-top:14px"><label>Card Radius — <span id="rv">${s.cardRadius||0}px</span></label><input id="sr" type="range" min="0" max="16" step="2" value="${s.cardRadius||0}" oninput="$('rv').textContent=this.value+'px'"/></div>
-    </div>
-    <div class="card">
-      <div class="csec">Shipping & Currency</div>
-      <div class="f3">
-        <div class="fg nm"><label>Currency Symbol</label><input id="sc" value="${esc(s.currencySymbol||"$")}"/></div>
-        <div class="fg nm"><label>Free Shipping Over ($)</label><input id="sfs" type="number" value="${s.freeShippingThreshold||150}"/></div>
-        <div class="fg nm"><label>Standard Shipping ($)</label><input id="ssc" type="number" value="${s.shippingCost||18}"/></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="csec">Active Coupon Codes</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <div class="csm" style="padding:12px 16px;display:flex;align-items:center;gap:10px"><span style="font-family:monospace;color:var(--gold);font-size:14px;font-weight:700">AURAH10</span><span style="font-size:12px;color:var(--tx3)">→ 10% off</span></div>
-        <div class="csm" style="padding:12px 16px;display:flex;align-items:center;gap:10px"><span style="font-family:monospace;color:var(--gold);font-size:14px;font-weight:700">WELCOME</span><span style="font-size:12px;color:var(--tx3)">→ 15% off</span></div>
-      </div>
-      <p style="font-size:11px;color:var(--tx3);margin-top:10px">To add custom coupon codes, edit <code style="background:var(--sf2);padding:1px 5px;border-radius:2px">public/js/cart-checkout.jsx</code> and search for COUPONS.</p>
-    </div>
-  </div>`;
-}
-
-// ─────────────────────────────────────────────
-// MODALS
-// ─────────────────────────────────────────────
-function tModal() {
-  const m = S.modal;
-  if (m.type==="prod") return tProdModal(m.data);
-  if (m.type==="cat") return tCatModal(m.data);
-  if (m.type==="ord") return tOrdModal(m.data);
-  return "";
-}
-
-function tProdModal(p) {
-  p = p || {}; const isE = !!p.id;
-  const sizes = p.sizes||[], colors = p.colors||[], details = p.details||[], imgs = p.images||[];
-  const m = mg(p.price, p.costPrice);
-  return `<div class="mbg" onclick="closeModal(event)"><div class="modal" onclick="event.stopPropagation()">
-  <div class="mh">
-    <div><div class="mt">${isE ? "Edit: "+esc(p.name) : "Add New Product"}</div>${isE?`<div style="font-size:10px;color:var(--tx3);margin-top:2px">ID #${p.id}</div>`:""}</div>
-    <button class="xb" onclick="closeModal()">✕</button>
-  </div>
-  <div class="mb">
-    <div class="hrl"><span>Basic Info</span></div>
-    <div class="f2">
-      <div class="fg nm"><label>Product Name *</label><input id="pn" value="${esc(p.name||"")}"/></div>
-      <div class="fg nm"><label>Subtitle / Material</label><input id="psub" value="${esc(p.subtitle||"")}"/></div>
-    </div>
-    <div class="fg" style="margin-top:14px"><label>Full Description</label><textarea id="pdesc" rows="3">${esc(p.description||"")}</textarea></div>
-    <div class="f2">
-      <div class="fg nm"><label>Category *</label><select id="pcol">${S.categories.map(c=>`<option value="${c.id}"${p.collection===c.id?" selected":""}>${esc(c.label)}</option>`).join("")}</select></div>
-      <div class="fg nm"><label>Badge</label><select id="pbadge">
-        <option value=""${!p.badge?" selected":""}>None</option>
-        ${["Bestseller","New","Low Stock","Editor's Pick","Gift Ready","Handcrafted","Sale"].map(b=>`<option value="${b}"${p.badge===b?" selected":""}>${b}</option>`).join("")}
-      </select></div>
-    </div>
-
-    <div class="hrl"><span>Pricing & Profit Calculator</span></div>
-    <div class="f4">
-      <div class="fg nm"><label>Cost Price ($)</label><input id="pcost" type="number" value="${p.costPrice||""}" oninput="liveMg()" placeholder="Your cost"/><div class="fhint">What you pay supplier</div></div>
-      <div class="fg nm"><label>Sell Price ($) *</label><input id="pprice" type="number" value="${p.price||""}" oninput="liveMg()" placeholder="Customer pays"/><div class="fhint">Store display price</div></div>
-      <div class="fg nm"><label>Original Price ($)</label><input id="porig" type="number" value="${p.originalPrice||""}" placeholder="For sale tag"/><div class="fhint">Shown as strikethrough</div></div>
-      <div class="fg nm"><label>Profit Margin</label>
-        <div class="mgb" id="mgb" style="color:${mc(m)}">${m!==null?m+"%":"—"}</div>
-        <div id="mgh" class="fhint ${m!==null?(m>=30?"ok":m>=15?"warn":"bad"):""}">${m!==null?(m>=40?"✓ Excellent":m>=30?"✓ Good":m>=15?"⚠ Low margin":"✕ Very low"):"Enter both prices"}</div>
-      </div>
-    </div>
-
-    <div class="hrl"><span>Product Images</span></div>
-    <div class="ig" id="igrid">
-      ${imgs.map((img,i)=>`<div class="ic">${imgSrc(img)?`<img src="${esc(img)}" loading="lazy"/>`:`<div class="iph">${IC.img}<span style="font-size:8px">${esc(img)}</span></div>`}${i===0?`<div class="main-badge">Main</div>`:""}
-        <button class="rm" onclick="rmImg(${i})">✕</button></div>`).join("")}
-      <label class="iup" id="iup-label" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleImgDrop(event)">
-        <input type="file" accept="image/*" multiple onchange="upImgs(this)"/>
-        ${IC.upl}<span>Drop or click<br>to upload (max 5MB)</span>
-        <div class="upload-progress" id="img-prog"><div class="upload-progress-fill" id="img-prog-fill"></div></div>
-      </label>
-    </div>
-    <div class="img-count" id="img-count">${imgs.length} image${imgs.length!==1?"s":""} · First image is the main product photo</div>
-    <div class="fg"><label>Image URLs (auto-filled on upload, or paste URLs)</label><input id="pimgs" value="${esc(imgs.join(", "))}"/></div>
-
-    <div class="hrl"><span>Sizes / Variants</span></div>
-    <div id="sz-tags" class="tags">${sizes.map(s=>`<span class="tag">${esc(s)}<button class="tdel" onclick="rmTag('sz','${esc(s)}')">×</button></span>`).join("")}</div>
-    <div class="ar">
-      <input id="nsz" placeholder="e.g. XS  S  M  L  XL  or  30ml  One Size"/>
-      <button class="btn btn-sm btn-o" onclick="addTag('sz')">+ Add</button>
-    </div>
-
-    <div class="hrl"><span>Colors</span></div>
-    <div id="cl-tags" class="tags">${colors.map(c=>`<span class="tag"><span class="csw" style="background:${c.hex}"></span>${esc(c.name)}<button class="tdel" onclick="rmColor('${esc(c.name)}')">×</button></span>`).join("")}</div>
-    <div class="ar">
-      <input id="ncn" placeholder="Color name" style="flex:2"/>
-      <input id="nch" type="color" value="#c9a880" style="width:48px;padding:3px;height:38px;flex-shrink:0"/>
-      <button class="btn btn-sm btn-o" onclick="addColor()">+ Add</button>
-    </div>
-
-    <div class="hrl"><span>Details & Care Instructions</span></div>
-    <div id="dt-tags" class="tags">${details.map((d,i)=>`<span class="tag">${esc(d)}<button class="tdel" onclick="rmTag('dt',${i})">×</button></span>`).join("")}</div>
-    <div class="ar">
-      <input id="ndt" placeholder="e.g. 100% Cashmere Blend, Made in Italy"/>
-      <button class="btn btn-sm btn-o" onclick="addTag('dt')">+ Add</button>
-    </div>
-
-    <div class="hrl"><span>Display</span></div>
-    <div class="f4">
-      <div class="fg nm"><label>Rating (0–5)</label><input id="prat" type="number" min="0" max="5" step="0.1" value="${p.rating||4.5}"/></div>
-      <div class="fg nm"><label>Review Count</label><input id="prev" type="number" value="${p.reviews||0}"/></div>
-      <div class="fg nm" style="grid-column:span 2;flex-direction:row;align-items:center;gap:12px;padding-top:18px">
-        <label class="sw"><input id="pfeat" type="checkbox" ${p.featured?"checked":""}><span class="swt"></span></label>
-        <label style="font-size:13px;color:var(--tx2);text-transform:none;letter-spacing:0;cursor:pointer" for="pfeat">Featured on homepage</label>
-      </div>
-    </div>
-  </div>
-  <div class="mf">
-    <button class="btn btn-o" onclick="closeModal()">Cancel</button>
-    <button class="btn btn-g" onclick="saveProd(${p.id||"null"})">${isE?"Save Changes":"Create Product"}</button>
-  </div>
-</div></div>`;
-}
-
-function tCatModal(cat) {
-  const c = cat || {};
-  return `<div class="mbg" onclick="closeModal(event)"><div class="modal sm" onclick="event.stopPropagation()">
-  <div class="mh"><div class="mt">${c.id?"Edit Category":"Add Category"}</div><button class="xb" onclick="closeModal()">✕</button></div>
-  <div class="mb">
-    <div class="fg"><label>Category Name *</label><input id="cl" value="${esc(c.label||"")}"/></div>
-    <div class="fg nm"><label>Slug / ID ${c.id?"(cannot change)":""}</label><input id="ci" value="${esc(c.id||"")}" ${c.id?"readonly style='opacity:.4'":"placeholder='auto-generated from name'"}"/></div>
-    <p style="font-size:11px;color:var(--tx3);margin-top:12px">The slug is used in product filters and URLs. It's auto-generated if left blank.</p>
-  </div>
-  <div class="mf"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-g" onclick="saveCat('${c.id||""}')">${c.id?"Save Changes":"Create Category"}</button></div>
-</div></div>`;
-}
-
-function tOrdModal(ordId) {
-  const o = S.orders.find(x => x.id === ordId); if (!o) return "";
-  const pr = (o.total||0) - (o.totalCost||0);
-  const steps = ["pending","processing","shipped","delivered"], si = steps.indexOf(o.status);
-  return `<div class="mbg" onclick="closeModal(event)"><div class="modal" onclick="event.stopPropagation()">
-  <div class="mh">
-    <div>
-      <div class="mt">Order ${o.id}</div>
-      <div style="font-size:11px;color:var(--tx3);margin-top:2px">${fmtDT(o.createdAt)}</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:12px">
-      <span class="badge ${sb(o.status)}">${o.status}</span>
-      <button class="xb" onclick="closeModal()">✕</button>
-    </div>
-  </div>
-  <div class="mb">
-    ${o.status!=="cancelled" ? `<div class="ot">
-      ${steps.map((step,i)=>{
-        const done=i<si, act=i===si;
-        return `<div class="ots${done?" done":act?" act":""}">
-          <div class="otd${done?" done":act?" act":""}">${done?"✓":i+1}</div>
-          <div class="otl${done?" done":act?" act":""}">${step}</div>
-        </div>`;
-      }).join("")}
-    </div>` : `<div style="background:var(--rdbg);border:1px solid rgba(204,85,85,.2);border-radius:6px;padding:12px 16px;margin-bottom:18px;color:var(--red);font-size:13px">⚠ This order was cancelled</div>`}
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
-      <div class="csm" style="padding:14px">
-        <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-bottom:10px;font-weight:600">Customer Details</div>
-        <div style="font-weight:600;font-size:15px">${o.firstName||""} ${o.lastName||""}</div>
-        <div style="font-size:12px;color:var(--blue);margin-top:3px">${o.email||""}</div>
-        <div style="font-size:12px;color:var(--tx3);margin-top:10px;line-height:1.7">${o.address||""}<br/>${o.city||""} ${o.zip||""}</div>
-      </div>
-      <div class="csm" style="padding:14px">
-        <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-bottom:10px;font-weight:600">Financials</div>
-        ${[
-          {l:"Order Revenue",v:"$"+fmt(o.total),c:"var(--gold)",b:true},
-          {l:"Cost of Goods",v:o.totalCost?"$"+fmt(o.totalCost):"Not tracked",c:"var(--red)"},
-          {l:"Net Profit",v:o.totalCost?(pr>=0?"+":"")+"$"+fmt(pr):"—",c:pr>=0?"var(--green)":"var(--red)",b:true},
-          {l:"Shipping",v:"$"+fmt(o.shipping||0),c:"var(--tx2)"},
-        ].map(r=>`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bd)">
-          <span style="font-size:12px;color:var(--tx3)">${r.l}</span>
-          <span style="font-weight:${r.b?700:500};color:${r.c}">${r.v}</span>
-        </div>`).join("")}
-      </div>
-    </div>
-
-    <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-bottom:12px;font-weight:600">Items (${(o.items||[]).length})</div>
-    <div style="border:1px solid var(--bd);border-radius:6px;overflow:hidden;margin-bottom:20px">
-      ${(o.items||[]).length===0 ? `<div style="padding:20px;text-align:center;color:var(--tx3)">No items recorded</div>` :
-      (o.items||[]).map((item,i)=>{
-        const prod = S.products.find(p=>p.id===item.id);
-        return `<div style="display:flex;align-items:center;gap:14px;padding:12px 16px;${i>0?"border-top:1px solid var(--bd)":""}">
-          <div style="width:40px;height:54px;background:var(--sf2);border-radius:4px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center">
-            ${prod&&imgSrc(prod.images&&prod.images[0])?`<img src="${esc(prod.images[0])}" style="width:100%;height:100%;object-fit:cover"/>`:`<span style="font-size:8px;color:var(--tx3)">${esc(item.name||"").slice(0,3)}</span>`}
-          </div>
-          <div style="flex:1;min-width:0">
-            <div style="font-weight:500">${esc(item.name||"")}</div>
-            <div style="font-size:11px;color:var(--tx3);margin-top:3px">
-              ${item.size?`Size: ${esc(item.size)} · `:""}${item.color?`Color: ${esc(item.color)} · `:""}Qty: ${item.qty||1}
-              ${prod&&prod.costPrice?` · Cost: $${fmt(prod.costPrice*item.qty)}`:""}
-            </div>
-          </div>
-          <div style="text-align:right;flex-shrink:0">
-            <div style="font-weight:700;color:var(--gold)">$${fmt(item.price*item.qty)}</div>
-            <div style="font-size:10px;color:var(--tx3)">$${item.price} each</div>
-          </div>
-        </div>`;
-      }).join("")}
-    </div>
-
-    <div style="display:flex;align-items:center;gap:12px">
-      <span style="font-size:12px;color:var(--tx2);font-weight:500">Update Status:</span>
-      <select onchange="updOrdSt('${o.id}',this.value)" style="background:var(--sf2);border:1px solid var(--bd);color:var(--tx);padding:8px 13px;font-size:12px;border-radius:4px;outline:none;cursor:pointer">
-        ${["pending","processing","shipped","delivered","cancelled"].map(s=>`<option value="${s}"${o.status===s?" selected":""}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join("")}
-      </select>
-    </div>
-  </div>
-  <div class="mf"><button class="btn btn-o" onclick="closeModal()">Close</button></div>
-</div></div>`;
-}
-
-// ─────────────────────────────────────────────
-// ACTIONS
-// ─────────────────────────────────────────────
-function openProdModal(id) {
-  const p = id ? JSON.parse(JSON.stringify(S.products.find(x=>x.id===id)||{})) : {};
-  S.modal = {type:"prod", data:p}; render();
-}
-function openCatModal(id) {
-  const c = id ? JSON.parse(JSON.stringify(S.categories.find(x=>x.id===id)||{})) : null;
-  S.modal = {type:"cat", data:c}; render();
-}
-function openOrdModal(id) { S.modal = {type:"ord", data:id}; render(); }
-function closeModal(e) { if (!e || e.target === e.currentTarget) { S.modal = null; render(); } }
-
-function liveMg() {
-  const cost=parseFloat($("pcost")?.value)||0, price=parseFloat($("pprice")?.value)||0;
-  const mb=$("mgb"), mh=$("mgh"); if (!mb) return;
-  if (price>0) {
-    const m=Math.round((price-cost)/price*100);
-    mb.textContent=m+"%"; mb.style.color=mc(m);
-    if(mh){mh.textContent=m>=40?"✓ Excellent":m>=30?"✓ Good":m>=15?"⚠ Low margin":"✕ Very low";mh.className="fhint "+(m>=30?"ok":m>=15?"warn":"bad");}
-  } else { mb.textContent="—"; mb.style.color="var(--tx3)"; }
-}
-
-// Tags
-function addTag(type) {
-  const p = S.modal?.data; if (!p) return;
-  if (type==="sz") {
-    const v=$("nsz")?.value?.trim(); if(!v) return;
-    if(!p.sizes) p.sizes=[];
-    if(!p.sizes.includes(v)) p.sizes.push(v);
-    $("nsz").value="";
-    $("sz-tags").innerHTML=p.sizes.map(s=>`<span class="tag">${esc(s)}<button class="tdel" onclick="rmTag('sz','${esc(s)}')">×</button></span>`).join("");
+  const tk = document.getElementById("tkInput").value.trim();
+  if (!tk) return;
+  const r = await fetch("/api/admin/login", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({token:tk}) });
+  if (r.ok) {
+    TK = tk;
+    localStorage.setItem("aurah_tk", tk);
+    await loadData();
+    renderApp();
   } else {
-    const v=$("ndt")?.value?.trim(); if(!v) return;
-    if(!p.details) p.details=[];
-    p.details.push(v); $("ndt").value="";
-    $("dt-tags").innerHTML=p.details.map((d,i)=>`<span class="tag">${esc(d)}<button class="tdel" onclick="rmTag('dt',${i})">×</button></span>`).join("");
+    toast("Wrong token", "err");
   }
 }
-function rmTag(type,key) {
-  const p = S.modal?.data; if (!p) return;
-  if(type==="sz"){p.sizes=(p.sizes||[]).filter(s=>s!==key);$("sz-tags").innerHTML=p.sizes.map(s=>`<span class="tag">${esc(s)}<button class="tdel" onclick="rmTag('sz','${esc(s)}')">×</button></span>`).join("");}
-  else{(p.details=p.details||[]).splice(key,1);$("dt-tags").innerHTML=p.details.map((d,i)=>`<span class="tag">${esc(d)}<button class="tdel" onclick="rmTag('dt',${i})">×</button></span>`).join("");}
-}
-function addColor() {
-  const p=S.modal?.data; if(!p) return;
-  const name=$("ncn")?.value?.trim(); if(!name) return;
-  const hex=$("nch")?.value||"#ccc";
-  if(!p.colors) p.colors=[]; p.colors.push({name,hex}); $("ncn").value="";
-  $("cl-tags").innerHTML=p.colors.map(c=>`<span class="tag"><span class="csw" style="background:${c.hex}"></span>${esc(c.name)}<button class="tdel" onclick="rmColor('${esc(c.name)}')">×</button></span>`).join("");
-}
-function rmColor(name) {
-  const p=S.modal?.data; if(!p) return;
-  p.colors=(p.colors||[]).filter(c=>c.name!==name);
-  $("cl-tags").innerHTML=p.colors.map(c=>`<span class="tag"><span class="csw" style="background:${c.hex}"></span>${esc(c.name)}<button class="tdel" onclick="rmColor('${esc(c.name)}')">×</button></span>`).join("");
+
+function logout() {
+  TK = "";
+  localStorage.removeItem("aurah_tk");
+  renderLogin();
 }
 
-// Image upload
-function rebuildGrid() {
-  const p=S.modal?.data; if(!p) return;
-  $("igrid").innerHTML=p.images.map((img,i)=>`<div class="ic">${imgSrc(img)?`<img src="${esc(img)}" loading="lazy"/>`:`<div class="iph">${IC.img}<span style="font-size:8px">${esc(img)}</span></div>`}${i===0?`<div class="main-badge">Main</div>`:""}<button class="rm" onclick="rmImg(${i})">✕</button></div>`).join("")+
-    `<label class="iup" id="iup-label" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleImgDrop(event)"><input type="file" accept="image/*" multiple onchange="upImgs(this)"/>${IC.upl}<span>Drop or click<br>to upload</span><div class="upload-progress" id="img-prog"><div class="upload-progress-fill" id="img-prog-fill"></div></div></label>`;
-  $("pimgs").value=p.images.join(", ");
-  const cnt=$("img-count"); if(cnt) cnt.textContent=p.images.length+" image"+(p.images.length!==1?"s":"")+" · First image is the main product photo";
+async function loadData() {
+  const [products, categories] = await Promise.all([
+    api.get("/products"),
+    api.get("/categories"),
+  ]);
+  state.products = Array.isArray(products) ? products : [];
+  state.categories = Array.isArray(categories) ? categories : [];
 }
 
-async function upImgs(input) {
-  const files=Array.from(input.files); if(!files.length) return;
-  const p=S.modal?.data; if(!p) return; if(!p.images) p.images=[];
-  const prog=$("img-prog"), fill=$("img-prog-fill");
-  if(prog) prog.classList.add("show");
-  toast("Uploading "+files.length+" image"+(files.length>1?"s":"")+"…","info");
-  let done=0;
-  for(const file of files){
-    try{const r=await A.up(file);if(r.url)p.images.push(r.url);done++;if(fill)fill.style.width=(done/files.length*100)+"%";}
-    catch(e){toast("Failed: "+file.name,"err");}
-  }
-  if(prog){prog.classList.remove("show");if(fill)fill.style.width="0";}
-  rebuildGrid(); toast("Uploaded "+done+" image"+(done!==1?"s":""));
+function renderApp() {
+  document.getElementById("app").innerHTML = `
+    <div class="wrap">
+      <h1>AURAH — Manage Store</h1>
+      <p class="sub">Add products, categories, and photos directly &nbsp;·&nbsp; <button class="linkbtn" onclick="window.open('/','_blank')">View Store</button> &nbsp;·&nbsp; <button class="linkbtn" onclick="logout()">Log Out</button></p>
+
+      <!-- ADD CATEGORY -->
+      <div class="card">
+        <h2>Add Category</h2>
+        <label>Category Name</label>
+        <input id="catName" placeholder="e.g. Accessories"/>
+        <button class="btn-main" onclick="addCategory()">Add Category</button>
+      </div>
+
+      <!-- EXISTING CATEGORIES -->
+      <div class="card">
+        <h2>Categories (${state.categories.length})</h2>
+        <table>
+          <thead><tr><th>Name</th><th>ID</th><th>Products</th><th></th></tr></thead>
+          <tbody>
+            ${state.categories.map(c => `
+              <tr>
+                <td>${esc(c.label)}</td>
+                <td style="opacity:.4;font-family:monospace">${c.id}</td>
+                <td>${state.products.filter(p=>p.collection===c.id).length}</td>
+                <td><button class="btn-del" onclick="deleteCategory('${c.id}')">Delete</button></td>
+              </tr>`).join("")}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ADD PRODUCT -->
+      <div class="card">
+        <h2>Add Product</h2>
+        <label>Product Name *</label>
+        <input id="pName" placeholder="e.g. Atelier Wrap Coat"/>
+
+        <div class="row">
+          <div>
+            <label>Category *</label>
+            <select id="pCategory">
+              ${state.categories.map(c=>`<option value="${c.id}">${esc(c.label)}</option>`).join("")}
+            </select>
+          </div>
+          <div>
+            <label>Subtitle</label>
+            <input id="pSubtitle" placeholder="e.g. Camel / Cashmere"/>
+          </div>
+        </div>
+
+        <div class="row3">
+          <div>
+            <label>Sell Price ($) *</label>
+            <input id="pPrice" type="number" placeholder="0.00"/>
+          </div>
+          <div>
+            <label>Cost Price ($)</label>
+            <input id="pCost" type="number" placeholder="0.00"/>
+          </div>
+          <div>
+            <label>Original Price ($)</label>
+            <input id="pOrig" type="number" placeholder="for sale tag"/>
+          </div>
+        </div>
+
+        <label>Description</label>
+        <textarea id="pDesc" placeholder="Full product description..."></textarea>
+
+        <div class="row">
+          <div>
+            <label>Sizes (comma separated)</label>
+            <input id="pSizes" placeholder="XS, S, M, L, XL"/>
+          </div>
+          <div>
+            <label>Badge</label>
+            <select id="pBadge">
+              <option value="">None</option>
+              <option>Bestseller</option><option>New</option><option>Low Stock</option>
+              <option>Editor's Pick</option><option>Gift Ready</option><option>Handcrafted</option><option>Sale</option>
+            </select>
+          </div>
+        </div>
+
+        <label>Photos</label>
+        <div class="upload">
+          <input type="file" accept="image/*" multiple onchange="handleUpload(this)"/>
+          Click or drag to upload photos
+        </div>
+        <div class="thumbs" id="thumbs"></div>
+
+        <label style="display:flex;align-items:center;gap:8px;margin-top:16px;text-transform:none">
+          <input type="checkbox" id="pFeatured" style="width:auto"/> Show on homepage (featured)
+        </label>
+
+        <button class="btn-main" onclick="addProduct()">Add Product</button>
+      </div>
+
+      <!-- EXISTING PRODUCTS -->
+      <div class="card">
+        <h2>Products (${state.products.length})</h2>
+        <table>
+          <thead><tr><th></th><th>Name</th><th>Category</th><th>Price</th><th></th></tr></thead>
+          <tbody>
+            ${state.products.map(p => `
+              <tr>
+                <td>${p.images && p.images[0] && p.images[0].startsWith("data:") ? `<img src="${p.images[0]}"/>` : ""}</td>
+                <td>${esc(p.name)}</td>
+                <td style="opacity:.5">${esc(p.collection)}</td>
+                <td>$${p.price}</td>
+                <td><button class="btn-del" onclick="deleteProduct(${p.id})">Delete</button></td>
+              </tr>`).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
 }
 
-async function handleImgDrop(e) {
-  e.preventDefault(); e.currentTarget.classList.remove("drag");
-  const files=Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith("image/"));
-  if(!files.length) return;
-  const p=S.modal?.data; if(!p) return; if(!p.images) p.images=[];
-  toast("Uploading "+files.length+" dropped image"+(files.length>1?"s":"")+"…","info");
-  let done=0;
-  for(const file of files){try{const r=await A.up(file);if(r.url)p.images.push(r.url);done++;}catch(e){toast("Failed","err");}}
-  rebuildGrid(); toast("Uploaded "+done+" image"+(done!==1?"s":""));
-}
+function esc(s) { return String(s||"").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 
-function rmImg(i){const p=S.modal?.data;if(!p||!p.images)return;p.images.splice(i,1);rebuildGrid();}
-
-// Save product
-async function saveProd(id) {
-  const name=$("pn")?.value?.trim(), price=parseFloat($("pprice")?.value);
-  if(!name){toast("Product name is required","err");return;}
-  if(!price){toast("Sell price is required","err");return;}
-  const p=S.modal?.data||{};
-  const imgs=$("pimgs")?.value?.split(",").map(s=>s.trim()).filter(Boolean)||[];
-  const data={...p,name,price,
-    costPrice:parseFloat($("pcost")?.value)||0,
-    subtitle:$("psub")?.value||"",
-    description:$("pdesc")?.value||"",
-    originalPrice:parseFloat($("porig")?.value)||null,
-    collection:$("pcol")?.value,
-    badge:$("pbadge")?.value||null,
-    images:imgs,
-    featured:$("pfeat")?.checked||false,
-    rating:parseFloat($("prat")?.value)||4.5,
-    reviews:parseInt($("prev")?.value)||0
-  };
+async function addCategory() {
+  const label = document.getElementById("catName").value.trim();
+  if (!label) return toast("Enter a category name", "err");
   try {
-    if(id!==null&&id!==undefined&&id!=="null"){
-      const u=await A.pu("/products/"+id,data);
-      S.products=S.products.map(p=>p.id===id?u:p);
-      toast("Product updated ✓");
-    } else {
-      const c=await A.po("/products",data);
-      S.products.push(c);
-      toast("Product created ✓");
-    }
-    S.modal=null; render();
-  } catch(e){toast("Save failed: "+e.message,"err");}
+    await api.post("/categories", { label });
+    await loadData();
+    renderApp();
+    toast("Category added");
+  } catch(e) { toast("Failed to add category", "err"); }
 }
 
-async function delProd(id){
-  if(!confirm("Delete this product? This cannot be undone.")) return;
-  try{await A.de("/products/"+id);S.products=S.products.filter(p=>p.id!==id);toast("Product deleted");render();}
-  catch(e){toast("Failed to delete","err");}
+async function deleteCategory(id) {
+  if (!confirm("Delete this category?")) return;
+  await api.del("/categories/" + id);
+  await loadData();
+  renderApp();
+  toast("Category deleted");
 }
 
-async function toggleFeat(id,val){
-  try{await A.pu("/products/"+id,{featured:val});S.products=S.products.map(p=>p.id===id?{...p,featured:val}:p);toast(val?"Marked as featured":"Removed from featured");}
-  catch(e){toast("Failed","err");}
+async function handleUpload(input) {
+  const files = Array.from(input.files);
+  if (!files.length) return;
+  toast("Uploading...", "ok");
+  for (const f of files) {
+    try {
+      const r = await api.upload(f);
+      if (r.url) state.images.push(r.url);
+    } catch(e) { toast("Upload failed: " + f.name, "err"); }
+  }
+  renderThumbs();
+  toast("Photos uploaded");
 }
 
-// Save category
-async function saveCat(eid){
-  const label=$("cl")?.value?.trim(); if(!label){toast("Category name is required","err");return;}
-  try{
-    if(eid){const u=await A.pu("/categories/"+eid,{label});S.categories=S.categories.map(c=>c.id===eid?u:c);toast("Category updated");}
-    else{const id=$("ci")?.value?.trim()||undefined;const c=await A.po("/categories",{label,id});S.categories.push(c);toast("Category created");}
-    S.modal=null;render();
-  }catch(e){toast("Failed","err");}
-}
-async function delCat(id){
-  if(!confirm("Delete category "+id+"? Products in this category will remain.")) return;
-  try{await A.de("/categories/"+id);S.categories=S.categories.filter(c=>c.id!==id);toast("Deleted");render();}
-  catch(e){toast("Failed","err");}
+function renderThumbs() {
+  document.getElementById("thumbs").innerHTML = state.images.map((img,i) =>
+    `<div class="thumb"><img src="${img}"/><button onclick="removeImg(${i})">✕</button></div>`
+  ).join("");
 }
 
-// Update order status
-async function updOrdSt(id,status){
-  try{
-    const u=await A.pu("/orders/"+id,{status});
-    S.orders=S.orders.map(o=>o.id===id?u:o);
-    toast("Order status: "+status);
-    if(S.modal?.type==="ord"){S.modal={type:"ord",data:id};render();}else rp();
-  }catch(e){toast("Failed","err");}
+function removeImg(i) {
+  state.images.splice(i, 1);
+  renderThumbs();
 }
 
-// Homepage save
-function addT(){if(!S.homepage.testimonials)S.homepage.testimonials=[];S.homepage.testimonials.push({quote:"",author:"",role:"",product:"",rating:5});rp();}
-function rmT(i){S.homepage.testimonials.splice(i,1);rp();}
-async function saveHP(){
-  const tels=$$(".tq").map((el,i)=>({quote:el.value,author:$$(".ta")[i]?.value||"",role:$$(".tr2")[i]?.value||"",product:$$(".tp")[i]?.value||"",rating:parseFloat($$(".tra")[i]?.value)||5}));
-  const hp={
-    hero:{badge:$("hb")?.value||"",headline:$("hh")?.value||"",subtext:$("hs")?.value||"",ctaText:$("hc")?.value||"",ctaSecondary:$("hc2")?.value||""},
-    marquee:$("hm")?.value?.split(",").map(s=>s.trim()).filter(Boolean)||[],
-    testimonials:tels
+async function addProduct() {
+  const name = document.getElementById("pName").value.trim();
+  const price = parseFloat(document.getElementById("pPrice").value);
+  const collection = document.getElementById("pCategory").value;
+  if (!name) return toast("Product name required", "err");
+  if (!price) return toast("Sell price required", "err");
+  if (!collection) return toast("Pick a category", "err");
+
+  const data = {
+    name, price, collection,
+    subtitle: document.getElementById("pSubtitle").value,
+    costPrice: parseFloat(document.getElementById("pCost").value) || 0,
+    originalPrice: parseFloat(document.getElementById("pOrig").value) || null,
+    description: document.getElementById("pDesc").value,
+    sizes: document.getElementById("pSizes").value.split(",").map(s=>s.trim()).filter(Boolean),
+    badge: document.getElementById("pBadge").value || null,
+    images: state.images.length ? state.images : ["placeholder"],
+    colors: [],
+    details: [],
+    rating: 4.8,
+    reviews: 0,
+    featured: document.getElementById("pFeatured").checked,
   };
-  try{
-    const r=await fetch("/api/admin/homepage",{method:"PUT",headers:{"Content-Type":"application/json","X-Admin-Token":TK},body:JSON.stringify(hp)});
-    if(!r.ok){const err=await r.json().catch(()=>({}));toast("Error: "+(err.error||r.status),"err");return;}
-    const u=await r.json();S.homepage=u;toast("Homepage saved ✓ — reload store to see changes");
-  }catch(e){toast("Network error","err");}
+
+  try {
+    await api.post("/products", data);
+    state.images = [];
+    await loadData();
+    renderApp();
+    toast("Product added \u2713");
+  } catch(e) { toast("Failed to add product", "err"); }
 }
 
-// Settings save
-async function saveSet(){
-  const s={storeName:$("sn")?.value||"AURAH",tagline:$("st")?.value||"",email:$("se")?.value||"",instagram:$("si")?.value||"",accentColor:$("sa")?.value||"#c9a85c",theme:$("sth")?.value||"dark",fontPair:$("sf")?.value||"cormorant",heroLayout:$("sh2")?.value||"split",cardRadius:parseInt($("sr")?.value)||0,currencySymbol:$("sc")?.value||"$",freeShippingThreshold:parseFloat($("sfs")?.value)||150,shippingCost:parseFloat($("ssc")?.value)||18};
-  try{
-    const r=await fetch("/api/admin/settings",{method:"PUT",headers:{"Content-Type":"application/json","X-Admin-Token":TK},body:JSON.stringify(s)});
-    if(!r.ok){const err=await r.json();toast("Error: "+err.error,"err");return;}
-    const u=await r.json();S.settings=u;toast("Settings saved ✓ — reload store to apply");
-  }catch(e){toast("Network error","err");}
+async function deleteProduct(id) {
+  if (!confirm("Delete this product?")) return;
+  await api.del("/products/" + id);
+  await loadData();
+  renderApp();
+  toast("Product deleted");
 }
 
-// Keys & misc
-function bindKeys(){
-  document.onkeydown=e=>{if(e.key==="Escape"&&S.modal){S.modal=null;render();}};
-  $("nsz")?.addEventListener("keydown",e=>{if(e.key==="Enter")addTag("sz");});
-  $("ndt")?.addEventListener("keydown",e=>{if(e.key==="Enter")addTag("dt");});
-  $("ncn")?.addEventListener("keydown",e=>{if(e.key==="Enter")addColor();});
-  $("tkin")?.addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
-}
-
-// Init
-render();
-if(S.auth) loadAll();
+checkLogin();
 </script>
 </body>
 </html>

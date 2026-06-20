@@ -23,15 +23,11 @@ function CollectionPage({ params, onNavigate, onAddToCart, onToggleWishlist, wis
     <div style={{ paddingTop: "64px", minHeight: "100vh" }}>
       {/* Header */}
       <div style={{
-        padding: "clamp(32px,6vw,60px) clamp(16px,4vw,32px) clamp(24px,4vw,40px)",
+        padding: "60px 32px 40px",
         borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
         background: isDark ? "#0e0d0b" : "#f5f1ea",
       }}>
         <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
-          {/* Back Button */}
-          <div style={{ marginBottom: "20px" }}>
-            <BackButton onNavigate={onNavigate} to="home" label="Home" theme={theme} />
-          </div>
           <p style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#c9a85c", marginBottom: "12px" }}>
             The Collection
           </p>
@@ -42,7 +38,7 @@ function CollectionPage({ params, onNavigate, onAddToCart, onToggleWishlist, wis
         </div>
       </div>
 
-      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 clamp(16px,4vw,32px)" }}>
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 32px" }}>
         {/* Filter + Sort Bar */}
         <div style={{
           display: "flex", justifyContent: "space-between", alignItems: "center",
@@ -201,12 +197,8 @@ function ProductPage({ params, onNavigate, onAddToCart, onToggleWishlist, wishli
 
   return (
     <div style={{ paddingTop: "64px" }}>
-      {/* Breadcrumb + Back */}
-      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "20px clamp(16px,4vw,32px) 0" }}>
-        {/* Back button row */}
-        <div style={{ marginBottom: "12px" }}>
-          <BackButton onNavigate={onNavigate} to="collection" label="Back to Collection" theme={theme} />
-        </div>
+      {/* Breadcrumb */}
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "24px 32px 0" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px", opacity: 0.45 }}>
           <button onClick={() => onNavigate("home")} style={{ background: "none", border: "none", cursor: "pointer", color: "inherit", padding: 0, fontFamily: "inherit" }}>Home</button>
           <span>/</span>
@@ -217,7 +209,7 @@ function ProductPage({ params, onNavigate, onAddToCart, onToggleWishlist, wishli
       </div>
 
       {/* Main Content */}
-      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "clamp(20px,4vw,32px) clamp(16px,4vw,32px)", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(24px,5vw,64px)", alignItems: "start" }} className="product-detail-grid">
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "32px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px", alignItems: "start" }} className="product-detail-grid">
         {/* Images */}
         <div>
           {/* Main Image */}
@@ -418,7 +410,7 @@ function ProductPage({ params, onNavigate, onAddToCart, onToggleWishlist, wishli
 
       {/* Related Products */}
       {related.length > 0 && (
-        <section style={{ padding: "clamp(48px,6vw,80px) clamp(16px,4vw,32px)", maxWidth: "1280px", margin: "0 auto" }}>
+        <section style={{ padding: "80px 32px", maxWidth: "1280px", margin: "0 auto" }}>
           <Reveal>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px, 3vw, 40px)", fontWeight: 400, marginBottom: "40px" }}>
               You May Also Love
@@ -445,11 +437,7 @@ function WishlistPage({ onNavigate, onAddToCart, onToggleWishlist, wishlistIds, 
 
   return (
     <div style={{ paddingTop: "64px", minHeight: "100vh" }}>
-      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "clamp(32px,6vw,60px) clamp(16px,4vw,32px)" }}>
-        {/* Back Button */}
-        <div style={{ marginBottom: "24px" }}>
-          <BackButton onNavigate={onNavigate} to="collection" label="Back to Collection" theme={theme} />
-        </div>
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "60px 32px" }}>
         <p style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#c9a85c", marginBottom: "12px" }}>Your Curation</p>
         <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 400, marginBottom: "8px" }}>Wishlist</h1>
         <p style={{ fontSize: "13px", opacity: 0.45, marginBottom: "48px" }}>{wished.length} {wished.length === 1 ? "piece" : "pieces"} saved</p>

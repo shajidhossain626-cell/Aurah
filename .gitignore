@@ -1,9 +1,7 @@
 node_modules/
 .env
 .env.local
-public/uploads/*
-!public/uploads/.gitkeep
-# data json files are committed as seeds
-# data/*.json
 .vercel/
 *.log
+public/uploads/*
+!public/uploads/.gitkeep

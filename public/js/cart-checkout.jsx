@@ -173,11 +173,7 @@ function CartPage({ cart, onNavigate, onUpdateQty, onRemove, theme }) {
 
   return (
     <div style={{ paddingTop: "64px", minHeight: "100vh" }}>
-      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "clamp(32px,6vw,60px) clamp(16px,4vw,32px)" }}>
-        {/* Back Button */}
-        <div style={{ marginBottom: "24px" }}>
-          <BackButton onNavigate={onNavigate} to="collection" label="Continue Shopping" theme={theme} />
-        </div>
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "60px 32px" }}>
         <p style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#c9a85c", marginBottom: "12px" }}>Your Selection</p>
         <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 400, marginBottom: "48px" }}>Shopping Bag</h1>
         {cart.length === 0 ? (
@@ -284,11 +280,7 @@ function CheckoutPage({ cart, onNavigate, onPlaceOrder, theme }) {
 
   return (
     <div style={{ paddingTop: "64px", minHeight: "100vh" }}>
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "clamp(32px,6vw,60px) clamp(16px,4vw,32px)" }}>
-        {/* Back to Cart */}
-        <div style={{ marginBottom: "28px" }}>
-          <BackButton onNavigate={onNavigate} to="cart" label="Back to Bag" theme={theme} />
-        </div>
+      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "60px 32px" }}>
         {/* Brand */}
         <div style={{ textAlign: "center", marginBottom: "48px" }}>
           <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "26px", letterSpacing: "0.18em" }}>AURAH</span>
